@@ -1,37 +1,64 @@
 ## User settings
 xcuserdata/
+*.xcuserstate
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.pbxuser
 
 ## Build folders
 build/
 DerivedData/
+*.build/
 
 ## App packaging
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.app
 
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
 
-# Swift Package Manager
+## Swift Package Manager
 .swiftpm/
 .build/
+Package.resolved
 
-# CocoaPods
+## CocoaPods
 Pods/
 Podfile.lock
 
-# Carthage
+## Carthage
 Carthage/Build/
+Carthage/Checkouts/
 
-# macOS
+## Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+## macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# User settings
+## Xcode
+*.hmap
+*.ipa
+*.xcscmblueprint
+*.xccheckout
+xcuserdata/
+IDEWorkspaceChecks.plist
+
+## Editor settings
 *.swp
 *.swo
 *.orig
 *.log
 *.tmp
+*~
 
