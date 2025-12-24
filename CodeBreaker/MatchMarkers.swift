@@ -16,15 +16,12 @@ enum Match {
 struct MatchMarkers: View {
     let matches: [Match]
 
+    private let gridRow = [GridItem(.fixed(20)), GridItem(.fixed(20))]
+
     var body: some View {
-        HStack {
-            VStack {
-                matchMarker(peg: 0)
-                matchMarker(peg: 1)
-            }
-            VStack {
-                matchMarker(peg: 2)
-                matchMarker(peg: 3)
+        LazyHGrid(rows: gridRow) {
+            ForEach(matches.indices, id: \.self) { index in
+                matchMarker(peg: index)
             }
         }
     }
@@ -37,13 +34,36 @@ struct MatchMarkers: View {
         Circle()
             .fill(exactCount > peg ? Color.primary : Color.clear)
             .strokeBorder(foundCount > peg ? Color.primary : Color.clear)
-            .aspectRatio(1, contentMode: .fit)
+            .frame(width: 20, height: 20)
     }
 }
 
+struct PreviewMatchMarkers: View {
+    let matches: [Match]
 
+    var body: some View {
+        HStack {
+            ForEach(matches.indices, id: \.self) { _ in
+                Circle()
+                    .fill(Color.primary)
+                    .frame(width: 40, height: 40)
+            }
 
+            MatchMarkers(matches: matches)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
 
 #Preview {
-    MatchMarkers(matches: [.exact, .inexact, .nomatch])
+    PreviewMatchMarkers(matches: [.exact, .inexact, .inexact])
+    PreviewMatchMarkers(matches: [.exact, .nomatch, .nomatch])
+    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .inexact])
+    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .nomatch])
+    PreviewMatchMarkers(matches: [.exact, .inexact, .nomatch, .nomatch])
+    PreviewMatchMarkers(matches: [.exact, .exact, .exact, .inexact, .nomatch, .nomatch])
+    PreviewMatchMarkers(matches: [.exact, .exact, .exact, .inexact, .inexact, .inexact])
+    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .inexact, .inexact])
+    PreviewMatchMarkers(matches: [.exact, .inexact, .inexact, .nomatch, .nomatch])
 }
