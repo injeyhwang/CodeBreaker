@@ -34,7 +34,7 @@ struct MatchMarkers: View {
         Circle()
             .fill(exactCount > peg ? Color.primary : Color.clear)
             .strokeBorder(foundCount > peg ? Color.primary : Color.clear)
-            .frame(width: 20, height: 20)
+            .aspectRatio(1, contentMode: .fit)
     }
 }
 
