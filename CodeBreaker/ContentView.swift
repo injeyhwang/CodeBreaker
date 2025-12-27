@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct CodeBreakerView: View {
+
     var body: some View {
         VStack {
             pegs(colors: [.red, .green, .green, .yellow])
@@ -30,5 +31,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    CodeBreakerView()
 }
