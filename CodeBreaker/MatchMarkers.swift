@@ -16,12 +16,25 @@ enum Match {
 struct MatchMarkers: View {
     let matches: [Match]
 
-    private let gridRow = [GridItem(.fixed(20)), GridItem(.fixed(20))]
-
     var body: some View {
-        LazyHGrid(rows: gridRow) {
-            ForEach(matches.indices, id: \.self) { index in
-                matchMarker(peg: index)
+        HStack(alignment: .top) {
+            VStack {
+                matchMarker(peg: 0)
+                matchMarker(peg: 1)
+            }
+            VStack {
+                matchMarker(peg: 2)
+                if matches.count > 3 {
+                    matchMarker(peg: 3)
+                }
+            }
+            VStack {
+                if matches.count > 4 {
+                    matchMarker(peg: 4)
+                }
+                if matches.count > 5 {
+                    matchMarker(peg: 5)
+                }
             }
         }
     }
@@ -34,7 +47,7 @@ struct MatchMarkers: View {
         Circle()
             .fill(exactCount > peg ? Color.primary : Color.clear)
             .strokeBorder(foundCount > peg ? Color.primary : Color.clear)
-            .aspectRatio(1, contentMode: .fit)
+            .frame(width: 20, height: 20)
     }
 }
 
