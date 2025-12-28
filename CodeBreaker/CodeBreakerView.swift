@@ -39,6 +39,14 @@ struct CodeBreakerView: View {
         .minimumScaleFactor(0.1)
     }
 
+    var resetButton: some View {
+        Button("Reset") {
+            withAnimation {
+                game = CodeBreaker()
+            }
+        }
+    }
+
     func view(for code: Code) -> some View {
         HStack {
             ForEach(code.pegs.indices, id: \.self) { index in
@@ -60,7 +68,9 @@ struct CodeBreakerView: View {
             }
             MatchMarkers(matches: code.matches)
                 .overlay {
-                    if code.kind == .guess {
+                    if code.kind == .master {
+                        resetButton
+                    } else if code.kind == .guess {
                         guessButton
                     }
                 }
