@@ -21,6 +21,14 @@ struct CodeBreaker {
     }
 
     mutating func attemptGuess() {
+        /// Ignore attempts where no pegs are chosen
+        if guess.pegs.contains(Code.missing) { return }
+
+        /// Ignore same attempts already made
+        for attempt in attempts {
+            if guess.pegs == attempt.pegs { return }
+        }
+
         var attempt = guess
         attempt.kind = .attempt(guess.match(against: masterCode))
         attempts.append(attempt)
@@ -70,7 +78,7 @@ struct Code {
 
         var pegsToMatch = otherCode.pegs
         for index in pegs.indices.reversed() {
-            if pegsToMatch.count > index, pegsToMatch[index] == pegs[index] {
+            if pegsToMatch.count > index && pegsToMatch[index] == pegs[index] {
                 results[index] = .exact
                 pegsToMatch.remove(at: index)
             }
