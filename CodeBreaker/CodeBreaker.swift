@@ -56,7 +56,7 @@ struct CodeBreaker {
 
     mutating func attemptGuess() {
         /// Ignore attempts where no pegs are chosen
-        if guess.pegs.contains(Code.missing) { return }
+        if guess.pegs.contains(Peg.missing) { return }
 
         /// Ignore same attempts already made
         for attempt in attempts {
@@ -74,7 +74,7 @@ struct CodeBreaker {
     mutating func changeGuessPeg(at index: Int) {
         let existingPeg = guess.pegs[index]
         guard let choicesIndex = pegChoices.firstIndex(of: existingPeg) else {
-            guess.pegs[index] = pegChoices.first ?? Code.missing
+            guess.pegs[index] = pegChoices.first ?? Peg.missing
             return
         }
 
@@ -98,15 +98,17 @@ struct CodeBreaker {
     }
 }
 
-struct Code {
-    static let missing: Peg = "clear"
+extension Peg {
+    static let missing = "clear"
+}
 
+struct Code {
     var kind: Kind
     var pegs: [Peg]
 
     init(kind: Kind = .unknown, length: Int = 4) {
         self.kind = kind
-        pegs = [Peg](repeating: Code.missing, count: length)
+        pegs = [Peg](repeating: Peg.missing, count: length)
     }
 
     enum Kind: Equatable {
@@ -116,39 +118,39 @@ struct Code {
         case unknown
     }
 
-    var matches: [Match] {
+    var matches: [Match]? {
         switch kind {
         case .attempt(let matches): return matches
-        default: return []
+        default: return nil
         }
     }
 
     mutating func randomize(from pegChoices: [Peg]) {
         for index in pegs.indices {
-            pegs[index] = pegChoices.randomElement() ?? Code.missing
+            pegs[index] = pegChoices.randomElement() ?? Peg.missing
         }
     }
 
     func match(against otherCode: Code) -> [Match] {
-        var results = [Match](repeating: .nomatch, count: pegs.count)
-
         var pegsToMatch = otherCode.pegs
-        for index in pegs.indices.reversed() {
-            if pegsToMatch.count > index && pegsToMatch[index] == pegs[index] {
-                results[index] = .exact
-                pegsToMatch.remove(at: index)
-            }
+
+        /// 1st pass: compute exact matches via zip and ==
+        let exactMatches: [Match] = zip(pegs, pegsToMatch).map {
+            $0 == $1 ? .exact : .nomatch
         }
 
-        for index in pegs.indices {
-            if results[index] != .exact {
-                if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
-                    results[index] = .inexact
-                    pegsToMatch.remove(at: matchIndex)
-                }
+        /// 2nd pass: compute inexact matches while consuming from the remaining pegsToMatch pool
+        return pegs.indices.map { index in
+            if exactMatches[index] == .exact {
+                return .exact
             }
-        }
 
-        return results
+            if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
+                pegsToMatch.remove(at: matchIndex)
+                return .inexact
+            }
+
+            return .nomatch
+        }
     }
 }

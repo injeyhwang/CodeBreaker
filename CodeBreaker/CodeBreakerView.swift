@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CodeBreakerView: View {
-    @State var game = CodeBreaker()
+    @State private var game = CodeBreaker()
 
     var body: some View {
         VStack(spacing: 20) {
@@ -32,7 +32,8 @@ struct CodeBreakerView: View {
                 game.attemptGuess()
             }
         }
-        .frame(width: 50)
+        .font(.system(size: 80))
+        .minimumScaleFactor(0.1)
     }
 
     var resetButton: some View {
@@ -42,47 +43,53 @@ struct CodeBreakerView: View {
                                    pegLength: .random(in: 3...6))
             }
         }
-        .frame(width: 50)
+        .font(.system(size: 80))
+        .minimumScaleFactor(0.1)
     }
 
     func view(for code: Code) -> some View {
         HStack {
-            HStack {
-                ForEach(code.pegs.indices, id: \.self) { index in
-                    ZStack {
-                        if code.pegs[index] == Code.missing {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(Color.gray)
-                        }
-
-                        if let colorized = code.pegs[index].colorize {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(colorized)
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(.gray)
-                                .foregroundStyle(.clear)
-                            Text(code.pegs[index])
-                                .font(.largeTitle)
-                        }
+            ForEach(code.pegs.indices, id: \.self) { index in
+                ZStack {
+                    if code.pegs[index] == Peg.missing {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.gray)
                     }
-                    .contentShape(Rectangle())
-                    .aspectRatio(1, contentMode: .fit)
-                    .onTapGesture {
-                        if code.kind == .guess {
-                            game.changeGuessPeg(at: index)
-                        }
+
+                    if let colorized = code.pegs[index].colorize {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(colorized)
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(.gray)
+                            .foregroundStyle(.clear)
+                        Text(code.pegs[index])
+                            .font(.largeTitle)
+                    }
+                }
+                .contentShape(Rectangle())
+                .aspectRatio(1, contentMode: .fit)
+                .onTapGesture {
+                    if code.kind == .guess {
+                        game.changeGuessPeg(at: index)
                     }
                 }
             }
 
-            if code.kind == .master {
-                resetButton
-            } else if code.kind == .guess {
-                guessButton
-            } else {
-                MatchMarkers(matches: code.matches)
-            }
+            Rectangle()
+                .foregroundStyle(.clear)
+                .aspectRatio(1, contentMode: .fit)
+                .overlay {
+                    if let matches = code.matches {
+                        MatchMarkers(matches: matches)
+                    } else {
+                        if code.kind == .master {
+                            resetButton
+                        } else if code.kind == .guess {
+                            guessButton
+                        }
+                    }
+                }
         }
     }
 }
