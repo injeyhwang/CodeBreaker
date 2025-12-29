@@ -11,13 +11,10 @@ struct CodeBreakerView: View {
     @State var game = CodeBreaker()
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             view(for: game.masterCode)
-            Divider()
-                .padding(.vertical)
             view(for: game.guess)
             Divider()
-                .padding(.vertical)
             ScrollView {
                 VStack(spacing: 20) {
                     ForEach(game.attempts.indices.reversed(), id: \.self) { index in
@@ -35,45 +32,57 @@ struct CodeBreakerView: View {
                 game.attemptGuess()
             }
         }
-        .font(.system(size: 80))
-        .minimumScaleFactor(0.1)
+        .frame(width: 50)
     }
 
     var resetButton: some View {
         Button("Reset") {
             withAnimation {
-                game = CodeBreaker(pegLength: .random(in: 3...6))
+                game = CodeBreaker(pegChoices: CodeBreaker.getGameChoices(),
+                                   pegLength: .random(in: 3...6))
             }
         }
+        .frame(width: 50)
     }
 
     func view(for code: Code) -> some View {
         HStack {
-            ForEach(code.pegs.indices, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 10)
-                    .overlay {
+            HStack {
+                ForEach(code.pegs.indices, id: \.self) { index in
+                    ZStack {
                         if code.pegs[index] == Code.missing {
                             RoundedRectangle(cornerRadius: 10)
                                 .strokeBorder(Color.gray)
                         }
+
+                        if let colorized = code.pegs[index].colorize {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(colorized)
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(.gray)
+                                .foregroundStyle(.clear)
+                            Text(code.pegs[index])
+                                .font(.largeTitle)
+                        }
                     }
-                    .contentShape(RoundedRectangle(cornerRadius: 10))
+                    .contentShape(Rectangle())
                     .aspectRatio(1, contentMode: .fit)
-                    .foregroundStyle(code.pegs[index])
                     .onTapGesture {
                         if code.kind == .guess {
                             game.changeGuessPeg(at: index)
                         }
                     }
-            }
-            MatchMarkers(matches: code.matches)
-                .overlay {
-                    if code.kind == .master {
-                        resetButton
-                    } else if code.kind == .guess {
-                        guessButton
-                    }
                 }
+            }
+
+            if code.kind == .master {
+                resetButton
+            } else if code.kind == .guess {
+                guessButton
+            } else {
+                MatchMarkers(matches: code.matches)
+            }
         }
     }
 }

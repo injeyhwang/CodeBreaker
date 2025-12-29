@@ -7,21 +7,51 @@
 
 import SwiftUI
 
-typealias Peg = Color
+typealias Peg = String
+
+extension String {
+    var colorize: Color? {
+        switch self.lowercased() {
+        case "red": return .red
+        case "blue": return .blue
+        case "green": return .green
+        case "yellow": return .yellow
+        case "orange": return .orange
+        case "purple": return .purple
+        case "pink": return .pink
+        case "gray", "grey": return .gray
+        case "black": return .black
+        case "white": return .white
+        case "cyan": return .cyan
+        case "mint": return .mint
+        case "indigo": return .indigo
+        case "brown": return .brown
+        case "teal": return .teal
+        case "clear": return .clear
+        default: return nil
+        }
+    }
+}
 
 struct CodeBreaker {
+    static let colorChoices = ["red", "green", "blue", "yellow"]
+    static let flagEmojiChoices = ["🇰🇷", "🇨🇦", "🇺🇸", "🇬🇧"]
+    static let faceEmojiChoices = ["😊", "🤣", "😂", "😭", "🥰"]
+
     var masterCode: Code
     var guess: Code
     var attempts: [Code]
     let pegChoices: [Peg]
+    let pegLength: Int
 
-    init(pegChoices: [Peg] = [.red, .green, .blue, .yellow],
-         pegLength: Int = 4) {
+    init(pegChoices: [Peg] = Self.colorChoices,
+         pegLength: Int = Self.colorChoices.count) {
         self.masterCode = Code(kind: .master, length: pegLength)
         self.masterCode.randomize(from: pegChoices)
         self.guess = Code(kind: .guess, length: pegLength)
         self.attempts = [Code]()
         self.pegChoices = pegChoices
+        self.pegLength = pegLength
     }
 
     mutating func attemptGuess() {
@@ -36,6 +66,9 @@ struct CodeBreaker {
         var attempt = guess
         attempt.kind = .attempt(guess.match(against: masterCode))
         attempts.append(attempt)
+
+        /// Clear guess
+        self.guess = Code(kind: .guess, length: pegLength)
     }
 
     mutating func changeGuessPeg(at index: Int) {
@@ -49,10 +82,24 @@ struct CodeBreaker {
         let newPeg = pegChoices[nextIndex]
         guess.pegs[index] = newPeg
     }
+
+    static func getGameChoices() -> [Peg] {
+        let gameChoices = [
+            Self.colorChoices,
+            Self.faceEmojiChoices,
+            Self.flagEmojiChoices
+        ]
+
+        if let choices = gameChoices.randomElement() {
+            return choices
+        }
+
+        return Self.colorChoices
+    }
 }
 
 struct Code {
-    static let missing: Peg = .clear
+    static let missing: Peg = "clear"
 
     var kind: Kind
     var pegs: [Peg]
