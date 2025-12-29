@@ -10,14 +10,18 @@ import SwiftUI
 typealias Peg = Color
 
 struct CodeBreaker {
-    var masterCode = Code(kind: .master)
-    var guess = Code(kind: .guess)
-    var attempts = [Code]()
+    var masterCode: Code
+    var guess: Code
+    var attempts: [Code]
     let pegChoices: [Peg]
 
-    init(pegChoices: [Peg] = [.red, .green, .blue, .yellow]) {
+    init(pegChoices: [Peg] = [.red, .green, .blue, .yellow],
+         pegLength: Int = 4) {
+        self.masterCode = Code(kind: .master, length: pegLength)
+        self.masterCode.randomize(from: pegChoices)
+        self.guess = Code(kind: .guess, length: pegLength)
+        self.attempts = [Code]()
         self.pegChoices = pegChoices
-        masterCode.randomize(from: pegChoices)
     }
 
     mutating func attemptGuess() {
@@ -51,7 +55,12 @@ struct Code {
     static let missing: Peg = .clear
 
     var kind: Kind
-    var pegs = [Peg](repeating: Code.missing, count: 4)
+    var pegs: [Peg]
+
+    init(kind: Kind = .unknown, length: Int = 4) {
+        self.kind = kind
+        pegs = [Peg](repeating: Code.missing, count: length)
+    }
 
     enum Kind: Equatable {
         case master

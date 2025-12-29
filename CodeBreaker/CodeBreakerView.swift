@@ -42,7 +42,7 @@ struct CodeBreakerView: View {
     var resetButton: some View {
         Button("Reset") {
             withAnimation {
-                game = CodeBreaker()
+                game = CodeBreaker(pegLength: .random(in: 3...6))
             }
         }
     }
