@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CodeBreakerView.swift
 //  CodeBreaker
 //
 //  Created by In Jey Hwang on 12/24/25.
@@ -81,7 +81,7 @@ struct CodeBreakerView: View {
                 .aspectRatio(1, contentMode: .fit)
                 .overlay {
                     if let matches = code.matches {
-                        MatchMarkers(matches: matches)
+                        MatchMarkersView(matches: matches)
                     } else {
                         if code.kind == .master {
                             resetButton

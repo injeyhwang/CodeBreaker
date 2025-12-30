@@ -1,5 +1,5 @@
 //
-//  MatchMarkers.swift
+//  MatchMarkersView.swift
 //  CodeBreaker
 //
 //  Created by In Jey Hwang on 12/24/25.
@@ -13,7 +13,7 @@ enum Match {
     case inexact
 }
 
-struct MatchMarkers: View {
+struct MatchMarkersView: View {
     let matches: [Match]
 
     var body: some View {
@@ -51,7 +51,7 @@ struct MatchMarkers: View {
     }
 }
 
-struct PreviewMatchMarkers: View {
+struct PreviewMatchMarkersView: View {
     let matches: [Match]
 
     var body: some View {
@@ -62,7 +62,7 @@ struct PreviewMatchMarkers: View {
                     .frame(width: 40, height: 40)
             }
 
-            MatchMarkers(matches: matches)
+            MatchMarkersView(matches: matches)
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,13 +70,13 @@ struct PreviewMatchMarkers: View {
 }
 
 #Preview {
-    PreviewMatchMarkers(matches: [.exact, .inexact, .inexact])
-    PreviewMatchMarkers(matches: [.exact, .nomatch, .nomatch])
-    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .inexact])
-    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .nomatch])
-    PreviewMatchMarkers(matches: [.exact, .inexact, .nomatch, .nomatch])
-    PreviewMatchMarkers(matches: [.exact, .exact, .exact, .inexact, .nomatch, .nomatch])
-    PreviewMatchMarkers(matches: [.exact, .exact, .exact, .inexact, .inexact, .inexact])
-    PreviewMatchMarkers(matches: [.exact, .exact, .inexact, .inexact, .inexact])
-    PreviewMatchMarkers(matches: [.exact, .inexact, .inexact, .nomatch, .nomatch])
+    PreviewMatchMarkersView(matches: [.exact, .inexact, .inexact])
+    PreviewMatchMarkersView(matches: [.exact, .nomatch, .nomatch])
+    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .inexact])
+    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .nomatch])
+    PreviewMatchMarkersView(matches: [.exact, .inexact, .nomatch, .nomatch])
+    PreviewMatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .nomatch, .nomatch])
+    PreviewMatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .inexact, .inexact])
+    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .inexact, .inexact])
+    PreviewMatchMarkersView(matches: [.exact, .inexact, .inexact, .nomatch, .nomatch])
 }
