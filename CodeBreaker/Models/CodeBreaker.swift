@@ -42,7 +42,7 @@ struct CodeBreaker {
         attempts.append(attempt)
 
         /// Clear guess
-        self.guess = Code(kind: .guess, length: pegLength)
+        guess.reset()
     }
 
     mutating func changeGuessPeg(at index: Int) {

@@ -65,6 +65,10 @@ struct Code {
         }
     }
 
+    mutating func reset() {
+        pegs = [Peg](repeating: Peg.missing, count: pegs.count)
+    }
+
     func match(against otherCode: Code) -> [Match] {
         var pegsToMatch = otherCode.pegs
 
