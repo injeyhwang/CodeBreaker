@@ -17,15 +17,13 @@ struct CodeBreakerView: View {
 
     // MARK: - Body
     var body: some View {
-        VStack(spacing: 20) {
+        VStack {
             view(for: game.masterCode)
             view(for: game.guess)
             Divider()
             ScrollView {
-                VStack(spacing: 20) {
-                    ForEach(game.attempts.indices.reversed(), id: \.self) { index in
-                        view(for: game.attempts[index])
-                    }
+                ForEach(game.attempts.indices.reversed(), id: \.self) { index in
+                    view(for: game.attempts[index])
                 }
             }
             PegChooser(choices: game.pegChoices) { peg in
