@@ -27,7 +27,9 @@ struct CodeView: View {
                 }
                 .overlay {
                     Selection.shape
-                        .foregroundStyle(code.isHidden ? .gray : .clear)
+                        .foregroundStyle(
+                            code.isHidden ? Selection.color : .clear
+                        )
                 }
                 .onTapGesture {
                     if code.kind == .guess {
@@ -47,8 +49,8 @@ struct CodeView: View {
 }
 
 #Preview {
-    let masterCode = Code(kind: .master(isHidden: false), length: 4)
     HStack {
-        CodeView(code: masterCode, selection: .constant(0))
+        CodeView(code: Code(kind: .guess, length: 4), selection: .constant(0))
     }
+    .padding()
 }
