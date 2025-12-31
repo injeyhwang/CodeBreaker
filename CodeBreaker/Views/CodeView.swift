@@ -20,16 +20,15 @@ struct CodeView: View {
             PegView(peg: code.pegs[index])
                 .padding(Selection.padding)
                 .background {
-                    if selection == index && code.kind == .guess {
+                    if code.kind == .guess && selection == index {
                         Selection.shape
                             .foregroundStyle(Selection.color)
                     }
                 }
                 .overlay {
-                    Selection.shape
-                        .foregroundStyle(
-                            code.isHidden ? Selection.color : .clear
-                        )
+                    if code.isHidden {
+                        Selection.shape.foregroundStyle(.gray)
+                    }
                 }
                 .onTapGesture {
                     if code.kind == .guess {
