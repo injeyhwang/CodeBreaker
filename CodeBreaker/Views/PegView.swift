@@ -8,11 +8,48 @@
 import SwiftUI
 
 struct PegView: View {
+    // MARK: Data in
+    let peg: Peg
+
+    // MARK: - Body
+    let pegShape = RoundedRectangle(cornerRadius: 10)
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            if let colorized = peg.colorize {
+                pegShape
+                    .fill(colorized)
+                    .strokeBorder(peg.isMissing ? .gray : colorized)
+
+            } else {
+                pegShape
+                    .fill(.clear)
+                    .strokeBorder(.gray)
+                Text(peg)
+                    .font(.largeTitle)
+            }
+        }
+        .contentShape(pegShape)
+        .aspectRatio(1, contentMode: .fit)
+    }
+}
+
+private struct PreviewPegView: View {
+    let pegs: [Peg]
+
+    var body: some View {
+        HStack {
+            ForEach(pegs, id: \.self) { peg in
+                PegView(peg: peg)
+            }
+        }
     }
 }
 
 #Preview {
-    PegView()
+    VStack {
+        PreviewPegView(pegs: [Peg.missing, "red", "yellow", "green", "blue"])
+        PreviewPegView(pegs: [Peg.missing, "✌🏼", "👋🏼", "🙏🏼", "🫰🏼"])
+    }
+    .padding()
 }

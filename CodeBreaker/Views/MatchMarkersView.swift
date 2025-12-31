@@ -7,15 +7,11 @@
 
 import SwiftUI
 
-enum Match {
-    case nomatch
-    case exact
-    case inexact
-}
-
 struct MatchMarkersView: View {
-    let matches: [Match]
+    // MARK: Data in
+    let matches: [Code.Match]
 
+    // MARK: - Body
     var body: some View {
         HStack(alignment: .top) {
             VStack {
@@ -51,8 +47,8 @@ struct MatchMarkersView: View {
     }
 }
 
-struct PreviewMatchMarkersView: View {
-    let matches: [Match]
+private struct PreviewMatchMarkersView: View {
+    let matches: [Code.Match]
 
     var body: some View {
         HStack {
