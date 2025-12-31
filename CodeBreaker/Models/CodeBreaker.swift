@@ -46,7 +46,10 @@ struct CodeBreaker {
 
         // Ignore same attempts already made
         for attempt in attempts {
-            if guess.pegs == attempt.pegs { return }
+            if guess.pegs == attempt.pegs {
+                guess.reset()
+                return
+            }
         }
 
         var attempt = guess
