@@ -19,12 +19,11 @@ struct PegView: View {
             if let colorized = peg.colorize {
                 pegShape
                     .fill(colorized)
-                    .strokeBorder(peg.isMissing ? .gray : colorized)
+                    .strokeBorder(colorized)
 
             } else {
                 pegShape
                     .fill(.clear)
-                    .strokeBorder(.gray)
                 Text(peg)
                     .font(.largeTitle)
             }
