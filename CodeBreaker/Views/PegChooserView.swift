@@ -1,5 +1,5 @@
 //
-//  PegChooser.swift
+//  PegChooserView.swift
 //  CodeBreaker
 //
 //  Created by In Jey Hwang on 12/31/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PegChooser: View {
+struct PegChooserView: View {
     // MARK: Data in
     let choices: [Peg]
 
@@ -30,9 +30,9 @@ struct PegChooser: View {
 
 #Preview {
     VStack {
-        PegChooser(choices: CodeBreaker.colorChoices) { _ in }
-        PegChooser(choices: CodeBreaker.faceEmojiChoices) { _ in }
-        PegChooser(choices: CodeBreaker.flagEmojiChoices) { _ in }
+        PegChooserView(choices: CodeBreaker.colorChoices) { _ in }
+        PegChooserView(choices: CodeBreaker.faceEmojiChoices) { _ in }
+        PegChooserView(choices: CodeBreaker.flagEmojiChoices) { _ in }
     }
     .padding()
 }
