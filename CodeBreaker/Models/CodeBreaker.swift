@@ -29,7 +29,7 @@ struct CodeBreaker {
         masterCode.randomize(from: pegChoices)
     }
 
-    var isGameOver: Bool {
+    var isOver: Bool {
         attempts.last?.pegs == masterCode.pegs
     }
 
@@ -60,7 +60,7 @@ struct CodeBreaker {
         guess.reset()
 
         // Reveal master code when the game is over
-        if isGameOver {
+        if isOver {
             masterCode.kind = .master(isHidden: false)
         }
     }

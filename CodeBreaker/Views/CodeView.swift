@@ -17,6 +17,9 @@ struct CodeView<AuxView>: View where AuxView: View {
     // MARK: Data in
     @ViewBuilder let auxView: () -> AuxView
 
+    // MARK: Data owned by me
+    @Namespace private var selectionNamespace
+
     init(code: Code,
          selection: Binding<Int> = .constant(-1),
          @ViewBuilder auxView: @escaping () -> AuxView = { EmptyView() }) {
@@ -32,16 +35,22 @@ struct CodeView<AuxView>: View where AuxView: View {
             ForEach(code.pegs.indices, id: \.self) { index in
                 PegView(peg: code.pegs[index])
                     .padding(Selection.padding)
-                    .background {
-                        if code.kind == .guess && selection == index {
-                            Selection.shape
-                                .foregroundStyle(Selection.color)
+                    .background { // Selection background
+                        Group {
+                            if code.kind == .guess && selection == index {
+                                Selection.shape
+                                    .foregroundStyle(Selection.color)
+                                    .matchedGeometryEffect(id: "selection", in: selectionNamespace)
+                            }
                         }
+                        .animation(.selection, value: selection)
                     }
-                    .overlay {
-                        if code.isHidden {
-                            Selection.shape.foregroundStyle(.gray)
-                        }
+                    .overlay { // Hidden code obscuring
+                        Selection.shape
+                            .foregroundStyle(code.isHidden ? .gray : .clear)
+                            .transaction { transaction in
+                                if code.isHidden { transaction.animation = nil }
+                            }
                     }
                     .onTapGesture {
                         if code.kind == .guess {
