@@ -25,7 +25,6 @@ struct TimerView: View {
     }
 }
 
-
 #Preview {
     TimerView(startTime: .now, endTime: nil)
 }
