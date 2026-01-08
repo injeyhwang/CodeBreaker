@@ -59,8 +59,6 @@ struct CodeBreakerView: View {
                                onChoose: changeSelectedPeg)
                 .transition(.pegChooser)
             }
-
-            Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
         }
         .padding()
     }
