@@ -19,26 +19,28 @@ struct CodeBreakerView: View {
 
     // MARK: - Body
     var body: some View {
+        Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
+
         VStack {
             CodeView(code: game.masterCode) {
-                Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
-                    .labelStyle(.iconOnly)
-                    .flexibleSystemFont(min: ResetButton.minimumFontSize,
-                                        max: ResetButton.maximumFontSize)
+                TimerView(startTime: game.startTime, endTime: game.endTime)
+                    .flexibleSystemFont()
+                    .monospaced()
+                    .lineLimit(1)
             }
             .animation(nil, value: game.attempts.count)
 
             Divider()
 
             ScrollView {
-                if !game.isOver || resetting {
+                if !game.isOver {
                     CodeView(code: game.guess, selection: $selection) {
                         Button("Guess", action: guessCode)
                             .flexibleSystemFont(min: GuessButton.minimumFontSize,
                                                 max: GuessButton.maximumFontSize)
                     }
                     .animation(nil, value: game.attempts.count)
-                    .opacity(resetting ? 0 : 1)
+                    .opacity(resetting && game.isOver ? 0 : 1)
                 }
 
                 ForEach(game.attempts.indices.reversed(), id: \.self) { index in
@@ -57,6 +59,8 @@ struct CodeBreakerView: View {
                                onChoose: changeSelectedPeg)
                 .transition(.pegChooser)
             }
+
+            Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
         }
         .padding()
     }
@@ -75,11 +79,11 @@ struct CodeBreakerView: View {
 
     private func resetGame() {
         withAnimation(.reset) {
-            resetting = true
+            resetting = game.isOver
+            game.resetGame()
+            selection = 0
         } completion: {
             withAnimation(.reset) {
-                game.resetGame()
-                selection = 0
                 resetting = false
             }
         }
@@ -93,12 +97,6 @@ struct CodeBreakerView: View {
     private struct GuessButton {
         static let minimumFontSize: CGFloat = 8
         static let maximumFontSize: CGFloat = 80
-        static let scaleFactor: CGFloat = 0.1
-    }
-
-    private struct ResetButton {
-        static let minimumFontSize: CGFloat = 4
-        static let maximumFontSize: CGFloat = 40
         static let scaleFactor: CGFloat = 0.1
     }
 }

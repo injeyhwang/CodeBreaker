@@ -5,6 +5,8 @@
 //  Created by In Jey Hwang on 12/27/25.
 //
 
+import SwiftUI
+
 struct CodeBreaker {
     static let colorChoices = ["red", "green", "blue", "yellow"]
     static let flagEmojiChoices = ["🇰🇷", "🇨🇦", "🇺🇸", "🇬🇧"]
@@ -16,17 +18,23 @@ struct CodeBreaker {
         Self.flagEmojiChoices
     ]
 
+    var pegChoices: [Peg]
     var masterCode: Code
     var guess: Code
     var attempts: [Code]
-    var pegChoices: [Peg]
+    var startTime: Date = .now
+    var endTime: Date?
 
     init(pegChoices: [Peg], pegLength: Int) {
+        self.pegChoices = pegChoices
         masterCode = Code(kind: .master(isHidden: true), length: pegLength)
+        masterCode.randomize(from: pegChoices)
         guess = Code(kind: .guess, length: pegLength)
         attempts = [Code]()
-        self.pegChoices = pegChoices
-        masterCode.randomize(from: pegChoices)
+
+        // Reset timer
+        startTime = .now
+        endTime = nil
     }
 
     var isOver: Bool {
@@ -62,6 +70,7 @@ struct CodeBreaker {
         // Reveal master code when the game is over
         if isOver {
             masterCode.kind = .master(isHidden: false)
+            endTime = .now
         }
     }
 
