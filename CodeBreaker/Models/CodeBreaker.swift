@@ -42,31 +42,29 @@ struct CodeBreaker {
     }
 
     var isOver: Bool {
-        attempts.last?.pegs == masterCode.pegs
+        attempts.first?.pegs == masterCode.pegs
     }
 
     mutating func resetGame() {
-        let pegChoices = Self.allPegChoices.randomElement() ?? Self.colorChoices
+        let pegChoices = Self.allPegChoices.randomElement() ?? Self.defaultChoices
         let pegLength = Int.random(in: 3...6)
 
         self = .init(pegChoices: pegChoices, pegLength: pegLength)
     }
 
-    mutating func attemptGuess() {
+    mutating func attemptGuess() -> Bool {
         // Ignore attempts where no pegs are chosen
-        if guess.pegs.contains(Peg.missing) { return }
+        guard !guess.pegs.contains(Peg.missing) else { return false }
 
         // Ignore same attempts already made
-        for attempt in attempts {
-            if guess.pegs == attempt.pegs {
-                guess.reset()
-                return
-            }
+        guard !attempts.contains(where: { $0.pegs == guess.pegs }) else {
+            guess.reset()
+            return false
         }
 
         var attempt = guess
         attempt.kind = .attempt(guess.match(against: masterCode))
-        attempts.append(attempt)
+        attempts.insert(attempt, at: 0)
 
         // Clear guess
         guess.reset()
@@ -76,6 +74,8 @@ struct CodeBreaker {
             masterCode.kind = .master(isHidden: false)
             endTime = .now
         }
+
+        return true
     }
 
     mutating func setGuessPeg(_ peg: Peg, at index: Int) {
