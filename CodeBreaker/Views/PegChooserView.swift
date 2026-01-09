@@ -12,14 +12,19 @@ struct PegChooserView: View {
     let choices: [Peg]
 
     // MARK: Data out function
-    let onChoose: (Peg) -> Void
+    let onChoose: ((Peg) -> Void)?
+
+    init(choices: [Peg], onChoose: ((Peg) -> Void)? = nil) {
+        self.choices = choices
+        self.onChoose = onChoose
+    }
 
     // MARK: - Body
     var body: some View {
         HStack {
             ForEach(choices, id: \.self) { peg in
                 Button {
-                    onChoose(peg)
+                    onChoose?(peg)
                 } label: {
                     PegView(peg: peg)
                 }
@@ -30,9 +35,11 @@ struct PegChooserView: View {
 
 #Preview {
     VStack {
-        PegChooserView(choices: CodeBreaker.colorChoices) { _ in }
-        PegChooserView(choices: CodeBreaker.faceEmojiChoices) { _ in }
-        PegChooserView(choices: CodeBreaker.flagEmojiChoices) { _ in }
+        PegChooserView(choices: CodeBreaker.defaultChoices)
+        PegChooserView(choices: CodeBreaker.earthChoices)
+        PegChooserView(choices: CodeBreaker.blueChoices)
+        PegChooserView(choices: CodeBreaker.faceEmojiChoices)
+        PegChooserView(choices: CodeBreaker.flagEmojiChoices)
     }
     .padding()
 }

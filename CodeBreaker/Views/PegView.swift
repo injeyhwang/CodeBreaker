@@ -12,8 +12,9 @@ struct PegView: View {
     let peg: Peg
 
     // MARK: - Body
-    let pegShape = RoundedRectangle(cornerRadius: 10)
+    let pegShape = Circle()
 
+    // MARK:  - Body
     var body: some View {
         ZStack {
             if let colorized = peg.colorize {

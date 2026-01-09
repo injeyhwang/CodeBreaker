@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CodeBreakerView: View {
     // MARK: Data owned by me
-    @State private var game = CodeBreaker(pegChoices: CodeBreaker.colorChoices,
+    @State private var game = CodeBreaker(pegChoices: CodeBreaker.defaultChoices,
                                           pegLength: 4)
     @State private var selection: Int = 0
 
@@ -65,9 +65,10 @@ struct CodeBreakerView: View {
 
     private func guessCode() {
         withAnimation(.guess) {
-            game.attemptGuess()
-            selection = 0
-            hideMostRecentMarkers = true
+            if game.attemptGuess() {
+                selection = 0
+                hideMostRecentMarkers = true
+            }
         } completion: {
             withAnimation(.guess) {
                 hideMostRecentMarkers = false

@@ -12,6 +12,7 @@ struct TimerView: View {
     let startTime: Date
     let endTime: Date?
 
+    // MARK: - Body
     var body: some View {
         if let endTime {
             Text(endTime, format: timerFormatStyle)
