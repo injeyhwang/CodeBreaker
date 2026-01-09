@@ -14,7 +14,7 @@ struct PegView: View {
     // MARK: - Body
     let pegShape = Circle()
 
-    // MARK:  - Body
+    // MARK: - Body
     var body: some View {
         ZStack {
             if let colorized = peg.colorize {

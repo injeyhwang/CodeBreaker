@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct CodeBreaker {
-    static let colorChoices = ["red", "green", "blue", "yellow"]
+    static let defaultChoices = ["red", "green", "blue", "yellow"]
+    static let earthChoices = ["orange", "brown", "black", "gray"]
+    static let blueChoices = ["blue", "indigo", "cyan"]
     static let flagEmojiChoices = ["🇰🇷", "🇨🇦", "🇺🇸", "🇬🇧"]
     static let faceEmojiChoices = ["😊", "🤣", "😂", "😭", "🥰"]
 
     static let allPegChoices = [
-        Self.colorChoices,
+        Self.defaultChoices,
+        Self.earthChoices,
+        Self.blueChoices,
         Self.faceEmojiChoices,
         Self.flagEmojiChoices
     ]
