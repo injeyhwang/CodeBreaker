@@ -14,14 +14,26 @@ struct GameChooserView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            List($games, id: \.pegChoices) { $game in
-                NavigationLink {
-                    CodeBreakerView(game: $game)
-                } label: {
-                    GameChoiceView(game: game)
+            List {
+                ForEach(games) { game in
+                    NavigationLink(value: game) {
+                        GameChoiceView(game: game)
+                    }
+                }
+                .onDelete { offsets in
+                    games.remove(atOffsets: offsets)
+                }
+                .onMove { from, to in
+                    games.move(fromOffsets: from, toOffset: to)
                 }
             }
-            .listStyle(.plain)
+            .navigationDestination(for: CodeBreaker.self) { value in
+                CodeBreakerView(game: value)
+            }
+            .navigationTitle("Code Breaker")
+            .toolbar {
+                EditButton()
+            }
         }
     }
 }

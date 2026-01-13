@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CodeBreakerView: View {
     // MARK: Data shared with me
-    @Binding var game: CodeBreaker
+    let game: CodeBreaker
 
     // MARK: Data owned by me
     @State private var selection: Int = 0
@@ -26,8 +26,8 @@ struct CodeBreakerView: View {
                 if !game.isOver {
                     CodeView(code: game.guess, selection: $selection) {
                         Button("Guess", action: guessCode)
-                            .flexibleSystemFont(min: GuessButton.minimumFontSize,
-                                                max: GuessButton.maximumFontSize)
+                            .flexibleSystemFont(min: GuessButton.minFontSize,
+                                                max: GuessButton.maxFontSize)
                     }
                     .animation(nil, value: game.attempts.count)
                     .opacity(resetting && game.isOver ? 0 : 1)
@@ -93,10 +93,12 @@ struct CodeBreakerView: View {
         game.setGuessPeg(peg, at: selection)
         selection = (selection + 1) % game.masterCode.pegs.count
     }
+}
 
-    private struct GuessButton {
-        static let minimumFontSize: CGFloat = 8
-        static let maximumFontSize: CGFloat = 80
+extension CodeBreakerView {
+    private enum GuessButton {
+        static let minFontSize: CGFloat = 8
+        static let maxFontSize: CGFloat = 80
         static let scaleFactor: CGFloat = 0.1
     }
 }
@@ -104,6 +106,6 @@ struct CodeBreakerView: View {
 #Preview {
     @Previewable @State var game = CodeBreaker.mastermindGame
     NavigationStack {
-        CodeBreakerView(game: $game)
+        CodeBreakerView(game: game)
     }
 }

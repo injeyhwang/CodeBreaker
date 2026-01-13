@@ -49,7 +49,9 @@ struct CodeView<AuxView>: View where AuxView: View {
                         Selection.shape
                             .foregroundStyle(code.isHidden ? .gray : .clear)
                             .transaction { transaction in
-                                if code.isHidden { transaction.animation = nil }
+                                if code.isHidden {
+                                    transaction.animation = nil
+                                }
                             }
                     }
                     .onTapGesture {
@@ -68,7 +70,7 @@ struct CodeView<AuxView>: View where AuxView: View {
     }
 }
 
-fileprivate struct Selection {
+private enum Selection {
     static let border: CGFloat = 5
     static let color: Color = .blue.opacity(0.3)
     static let cornerRadius: CGFloat = 10
@@ -77,5 +79,10 @@ fileprivate struct Selection {
 }
 
 #Preview {
-    CodeView(code: CodeBreaker.mastermindGame.masterCode)
+    @Previewable @State var selection = 0
+    VStack {
+        CodeView(code: CodeBreaker.mastermindGame.masterCode)
+        CodeView(code: CodeBreaker.mastermindGame.guess, selection: $selection)
+    }
+    .padding()
 }

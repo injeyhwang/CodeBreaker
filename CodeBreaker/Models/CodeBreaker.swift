@@ -7,25 +7,7 @@
 
 import SwiftUI
 
-struct CodeBreaker {
-    static let mastermindGame = Self(
-        name: "Mastermind",
-        pegChoices: .masterMindPegs,
-        pegLength: 4
-    )
-
-    static let earthTonesGame = Self(
-        name: "Earth Tones",
-        pegChoices: .earthTonesPegs,
-        pegLength: 4
-    )
-
-    static let underSeaGame = Self(
-        name: "Undersea",
-        pegChoices: .underSeaPegs,
-        pegLength: 3
-    )
-
+@Observable class CodeBreaker {
     var name: String
     var pegChoices: [Peg]
     var masterCode: Code
@@ -38,9 +20,11 @@ struct CodeBreaker {
         self.name = name
         self.pegChoices = pegChoices
         masterCode = Code(kind: .master(isHidden: true), length: pegLength)
-        masterCode.randomize(from: pegChoices)
         guess = Code(kind: .guess, length: pegLength)
         attempts = [Code]()
+
+        // Randomize master code from available peg choices
+        masterCode.randomize(from: pegChoices)
 
         // Reset timer
         startTime = .now
@@ -51,19 +35,21 @@ struct CodeBreaker {
         attempts.first?.pegs == masterCode.pegs
     }
 
-    mutating func resetGame() {
-        guard let newGame = [CodeBreaker].allGames.randomElement() else {
-            fatalError("This should not happen...")
-        }
+    func resetGame() {
+        let pegLength = Int.random(in: 3...6)
+        masterCode = Code(kind: .master(isHidden: true), length: pegLength)
+        guess = Code(kind: .guess, length: pegLength)
+        attempts = [Code]()
 
-        self = .init(
-            name: newGame.name,
-            pegChoices: newGame.pegChoices,
-            pegLength: .random(in: 3...6)
-        )
+        // Randomize master code from available peg choices
+        masterCode.randomize(from: pegChoices)
+
+        // Reset timer
+        startTime = .now
+        endTime = nil
     }
 
-    mutating func attemptGuess() -> Bool {
+    func attemptGuess() -> Bool {
         // Ignore attempts where no pegs are chosen
         guard !guess.pegs.contains(Peg.missing) else { return false }
 
@@ -89,17 +75,9 @@ struct CodeBreaker {
         return true
     }
 
-    mutating func setGuessPeg(_ peg: Peg, at index: Int) {
+    func setGuessPeg(_ peg: Peg, at index: Int) {
         guard guess.pegs.indices.contains(index) else { return }
-        
+
         guess.pegs[index] = peg
     }
-}
-
-extension [CodeBreaker] {
-    static let allGames: [CodeBreaker] = [
-        .mastermindGame,
-        .earthTonesGame,
-        .underSeaGame
-    ]
 }
