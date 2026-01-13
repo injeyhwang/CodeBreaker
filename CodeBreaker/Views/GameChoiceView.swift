@@ -24,14 +24,11 @@ struct GameChoiceView: View {
 }
 
 #Preview {
-    let defaultGame = CodeBreaker(name: "Default",
-                                  pegChoices: CodeBreaker.defaultChoices,
-                                  pegLength: CodeBreaker.defaultChoices.count)
     List {
-        GameChoiceView(game: defaultGame)
+        GameChoiceView(game: CodeBreaker.mastermindGame)
     }
     List {
-        GameChoiceView(game: defaultGame)
+        GameChoiceView(game: CodeBreaker.mastermindGame)
     }
     .listStyle(.plain)
 }

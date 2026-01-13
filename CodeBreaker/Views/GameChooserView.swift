@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameChooserView: View {
     // MARK: Data owned by me
-    @State private var games = [CodeBreaker]()
+    @State private var games = [CodeBreaker].allGames
 
     // MARK: - Body
     var body: some View {
@@ -22,17 +22,6 @@ struct GameChooserView: View {
                 }
             }
             .listStyle(.plain)
-        }
-        .onAppear {
-            games.append(CodeBreaker(name: "Mastermind",
-                                     pegChoices: CodeBreaker.defaultChoices,
-                                     pegLength: CodeBreaker.defaultChoices.count))
-            games.append(CodeBreaker(name: "Earth Tones",
-                                     pegChoices: CodeBreaker.earthChoices,
-                                     pegLength: CodeBreaker.earthChoices.count))
-            games.append(CodeBreaker(name: "Undersea",
-                                     pegChoices: CodeBreaker.blueChoices,
-                                     pegLength: CodeBreaker.blueChoices.count))
         }
     }
 }

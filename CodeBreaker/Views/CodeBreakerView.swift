@@ -102,12 +102,7 @@ struct CodeBreakerView: View {
 }
 
 #Preview {
-    @Previewable @State var game = CodeBreaker(
-        name: "Default",
-        pegChoices: CodeBreaker.defaultChoices,
-        pegLength: CodeBreaker.defaultChoices.count
-    )
-
+    @Previewable @State var game = CodeBreaker.mastermindGame
     NavigationStack {
         CodeBreakerView(game: $game)
     }

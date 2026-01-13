@@ -8,19 +8,23 @@
 import SwiftUI
 
 struct CodeBreaker {
-    static let defaultChoices = ["red", "green", "blue", "yellow"]
-    static let earthChoices = ["orange", "brown", "black", "gray"]
-    static let blueChoices = ["blue", "indigo", "cyan"]
-    static let flagEmojiChoices = ["🇰🇷", "🇨🇦", "🇺🇸", "🇬🇧"]
-    static let faceEmojiChoices = ["😊", "🤣", "😂", "😭", "🥰"]
+    static let mastermindGame = Self(
+        name: "Mastermind",
+        pegChoices: .masterMindPegs,
+        pegLength: 4
+    )
 
-    static let allPegChoices = [
-        Self.defaultChoices,
-        Self.earthChoices,
-        Self.blueChoices,
-        Self.faceEmojiChoices,
-        Self.flagEmojiChoices
-    ]
+    static let earthTonesGame = Self(
+        name: "Earth Tones",
+        pegChoices: .earthTonesPegs,
+        pegLength: 4
+    )
+
+    static let underSeaGame = Self(
+        name: "Undersea",
+        pegChoices: .underSeaPegs,
+        pegLength: 3
+    )
 
     var name: String
     var pegChoices: [Peg]
@@ -48,10 +52,15 @@ struct CodeBreaker {
     }
 
     mutating func resetGame() {
-        let pegChoices = Self.allPegChoices.randomElement() ?? Self.defaultChoices
-        let pegLength = Int.random(in: 3...6)
+        guard let newGame = [CodeBreaker].allGames.randomElement() else {
+            fatalError("This should not happen...")
+        }
 
-        self = .init(name: "Default", pegChoices: pegChoices, pegLength: pegLength)
+        self = .init(
+            name: newGame.name,
+            pegChoices: newGame.pegChoices,
+            pegLength: .random(in: 3...6)
+        )
     }
 
     mutating func attemptGuess() -> Bool {
@@ -85,4 +94,12 @@ struct CodeBreaker {
         
         guess.pegs[index] = peg
     }
+}
+
+extension [CodeBreaker] {
+    static let allGames: [CodeBreaker] = [
+        .mastermindGame,
+        .earthTonesGame,
+        .underSeaGame
+    ]
 }

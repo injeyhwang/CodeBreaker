@@ -36,3 +36,10 @@ extension Peg {
         }
     }
 }
+
+// Preset pegs for respective game types
+extension [Peg] {
+    static let masterMindPegs = ["red", "green", "blue", "yellow"]
+    static let earthTonesPegs = ["orange", "brown", "black", "gray"]
+    static let underSeaPegs = ["blue", "indigo", "cyan"]
+}

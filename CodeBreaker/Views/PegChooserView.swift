@@ -35,11 +35,9 @@ struct PegChooserView: View {
 
 #Preview {
     VStack {
-        PegChooserView(choices: CodeBreaker.defaultChoices)
-        PegChooserView(choices: CodeBreaker.earthChoices)
-        PegChooserView(choices: CodeBreaker.blueChoices)
-        PegChooserView(choices: CodeBreaker.faceEmojiChoices)
-        PegChooserView(choices: CodeBreaker.flagEmojiChoices)
+        PegChooserView(choices: [Peg].masterMindPegs)
+        PegChooserView(choices: [Peg].earthTonesPegs)
+        PegChooserView(choices: [Peg].underSeaPegs)
     }
     .padding()
 }
