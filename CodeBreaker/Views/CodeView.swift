@@ -77,7 +77,8 @@ fileprivate struct Selection {
 }
 
 #Preview {
-    let game = CodeBreaker(pegChoices: CodeBreaker.defaultChoices, pegLength: 4)
-
+    let game = CodeBreaker(name: "Mastermind",
+                           pegChoices: CodeBreaker.defaultChoices,
+                           pegLength: 4)
     CodeView(code: game.masterCode)
 }

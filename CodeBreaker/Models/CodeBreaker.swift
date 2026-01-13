@@ -22,6 +22,7 @@ struct CodeBreaker {
         Self.flagEmojiChoices
     ]
 
+    var name: String
     var pegChoices: [Peg]
     var masterCode: Code
     var guess: Code
@@ -29,7 +30,8 @@ struct CodeBreaker {
     var startTime: Date = .now
     var endTime: Date?
 
-    init(pegChoices: [Peg], pegLength: Int) {
+    init(name: String, pegChoices: [Peg], pegLength: Int) {
+        self.name = name
         self.pegChoices = pegChoices
         masterCode = Code(kind: .master(isHidden: true), length: pegLength)
         masterCode.randomize(from: pegChoices)
@@ -49,7 +51,7 @@ struct CodeBreaker {
         let pegChoices = Self.allPegChoices.randomElement() ?? Self.defaultChoices
         let pegLength = Int.random(in: 3...6)
 
-        self = .init(pegChoices: pegChoices, pegLength: pegLength)
+        self = .init(name: "Default", pegChoices: pegChoices, pegLength: pegLength)
     }
 
     mutating func attemptGuess() -> Bool {

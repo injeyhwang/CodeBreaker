@@ -8,29 +8,19 @@
 import SwiftUI
 
 struct CodeBreakerView: View {
-    // MARK: Data owned by me
-    @State private var game = CodeBreaker(pegChoices: CodeBreaker.defaultChoices,
-                                          pegLength: 4)
-    @State private var selection: Int = 0
+    // MARK: Data shared with me
+    @Binding var game: CodeBreaker
 
-    // MARK: States for animations
+    // MARK: Data owned by me
+    @State private var selection: Int = 0
     @State private var resetting = false
     @State private var hideMostRecentMarkers = false
 
     // MARK: - Body
     var body: some View {
-        Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
-
         VStack {
-            CodeView(code: game.masterCode) {
-                TimerView(startTime: game.startTime, endTime: game.endTime)
-                    .flexibleSystemFont()
-                    .monospaced()
-                    .lineLimit(1)
-            }
-            .animation(nil, value: game.attempts.count)
-
-            Divider()
+            CodeView(code: game.masterCode)
+                .animation(nil, value: game.attempts.count)
 
             ScrollView {
                 if !game.isOver {
@@ -58,6 +48,17 @@ struct CodeBreakerView: View {
                 PegChooserView(choices: game.pegChoices,
                                onChoose: changeSelectedPeg)
                 .transition(.pegChooser)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
+            }
+            ToolbarItem(placement: .automatic) {
+                TimerView(startTime: game.startTime, endTime: game.endTime)
+                    .monospaced()
+                    .lineLimit(1)
+                    .padding()
             }
         }
         .padding()
@@ -101,5 +102,13 @@ struct CodeBreakerView: View {
 }
 
 #Preview {
-    CodeBreakerView()
+    @Previewable @State var game = CodeBreaker(
+        name: "Default",
+        pegChoices: CodeBreaker.defaultChoices,
+        pegLength: CodeBreaker.defaultChoices.count
+    )
+
+    NavigationStack {
+        CodeBreakerView(game: $game)
+    }
 }
