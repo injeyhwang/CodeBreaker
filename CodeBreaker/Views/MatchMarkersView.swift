@@ -43,36 +43,26 @@ struct MatchMarkersView: View {
         Circle()
             .fill(exactCount > peg ? Color.primary : Color.clear)
             .strokeBorder(foundCount > peg ? Color.primary : Color.clear)
-            .frame(width: 20, height: 20)
+            .frame(width: MatchMarker.size, height: MatchMarker.size)
     }
 }
 
-private struct PreviewMatchMarkersView: View {
-    let matches: [Code.Match]
-
-    var body: some View {
-        HStack {
-            ForEach(matches.indices, id: \.self) { _ in
-                Circle()
-                    .fill(Color.primary)
-                    .frame(width: 40, height: 40)
-            }
-
-            MatchMarkersView(matches: matches)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
+private extension MatchMarkersView {
+    private enum MatchMarker {
+        static let size: CGFloat = 20
     }
 }
 
 #Preview {
-    PreviewMatchMarkersView(matches: [.exact, .inexact, .inexact])
-    PreviewMatchMarkersView(matches: [.exact, .nomatch, .nomatch])
-    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .inexact])
-    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .nomatch])
-    PreviewMatchMarkersView(matches: [.exact, .inexact, .nomatch, .nomatch])
-    PreviewMatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .nomatch, .nomatch])
-    PreviewMatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .inexact, .inexact])
-    PreviewMatchMarkersView(matches: [.exact, .exact, .inexact, .inexact, .inexact])
-    PreviewMatchMarkersView(matches: [.exact, .inexact, .inexact, .nomatch, .nomatch])
+    List {
+        MatchMarkersView(matches: [.exact, .inexact, .inexact])
+        MatchMarkersView(matches: [.exact, .nomatch, .nomatch])
+        MatchMarkersView(matches: [.exact, .exact, .inexact, .inexact])
+        MatchMarkersView(matches: [.exact, .exact, .inexact, .nomatch])
+        MatchMarkersView(matches: [.exact, .inexact, .nomatch, .nomatch])
+        MatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .nomatch, .nomatch])
+        MatchMarkersView(matches: [.exact, .exact, .exact, .inexact, .inexact, .inexact])
+        MatchMarkersView(matches: [.exact, .exact, .inexact, .inexact, .inexact])
+        MatchMarkersView(matches: [.exact, .inexact, .inexact, .nomatch, .nomatch])
+    }
 }
