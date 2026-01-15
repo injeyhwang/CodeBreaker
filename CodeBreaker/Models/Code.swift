@@ -52,21 +52,26 @@ struct Code: Equatable {
     }
 
     func match(against otherCode: Code) -> [Match] {
-        var pegsToMatch = otherCode.pegs
+        var pegsToMatch = otherCode.pegs.map(Optional.some)
 
-        // 1st pass: compute exact matches via zip and ==
-        let exactMatches: [Match] = zip(pegs, pegsToMatch).map {
-            $0 == $1 ? .exact : .nomatch
+        // 1st pass: compute exact matches
+        let exactMatches: [Match] = pegs.indices.map { index in
+            if pegs[index] == pegsToMatch[index] {
+                pegsToMatch[index] = nil // mark as consumed
+                return .exact
+            }
+
+            return .nomatch
         }
 
-        // 2nd pass: compute inexact matches while consuming from the remaining pegsToMatch pool
+        // 2nd pass: compute inexact matches
         return pegs.indices.map { index in
             if exactMatches[index] == .exact {
                 return .exact
             }
 
             if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
-                pegsToMatch[matchIndex] = "" // mark as consumed
+                pegsToMatch[matchIndex] = nil // mark as consumed
                 return .inexact
             }
 

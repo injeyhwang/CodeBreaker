@@ -12,44 +12,23 @@ struct PegView: View {
     let peg: Peg
 
     // MARK: - Body
-    let pegShape = Circle()
-
-    // MARK: - Body
     var body: some View {
-        ZStack {
-            if let colorized = peg.colorize {
-                pegShape
-                    .fill(colorized)
-                    .strokeBorder(colorized)
-
-            } else {
-                pegShape
-                    .fill(.clear)
-                Text(peg)
-                    .font(.largeTitle)
-            }
-        }
-        .contentShape(pegShape)
-        .aspectRatio(1, contentMode: .fit)
+        PegShape.shape
+            .fill(peg)
+            .strokeBorder(peg)
+            .contentShape(PegShape.shape)
+            .aspectRatio(1, contentMode: .fit)
     }
-}
 
-private struct PreviewPegView: View {
-    let pegs: [Peg]
-
-    var body: some View {
-        HStack {
-            ForEach(pegs, id: \.self) { peg in
-                PegView(peg: peg)
-            }
-        }
+    private enum PegShape {
+        static let shape = Circle()
     }
 }
 
 #Preview {
     VStack {
-        PreviewPegView(pegs: [Peg.missing, "red", "yellow", "green", "blue"])
-        PreviewPegView(pegs: [Peg.missing, "✌🏼", "👋🏼", "🙏🏼", "🫰🏼"])
+        ForEach([Peg].masterMindPegs, id: \.self) { peg in
+            PegView(peg: peg)
+        }
     }
-    .padding()
 }
