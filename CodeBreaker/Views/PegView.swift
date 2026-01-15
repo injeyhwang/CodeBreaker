@@ -15,7 +15,6 @@ struct PegView: View {
     var body: some View {
         PegShape.shape
             .fill(peg)
-            .strokeBorder(peg)
             .contentShape(PegShape.shape)
             .aspectRatio(1, contentMode: .fit)
             .frame(maxHeight: PegShape.maxHeight)

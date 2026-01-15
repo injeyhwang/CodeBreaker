@@ -40,6 +40,7 @@ struct CodeView<AuxView>: View where AuxView: View {
                             if code.kind == .guess && selection == index {
                                 Selection.shape
                                     .foregroundStyle(Selection.color)
+                                    .aspectRatio(1, contentMode: .fit)
                                     .matchedGeometryEffect(id: "selection", in: selectionNamespace)
                             }
                         }
@@ -48,6 +49,7 @@ struct CodeView<AuxView>: View where AuxView: View {
                     .overlay { // Hidden code obscuring
                         Selection.shape
                             .foregroundStyle(code.isHidden ? .gray : .clear)
+                            .aspectRatio(1, contentMode: .fit)
                             .transaction { transaction in
                                 if code.isHidden {
                                     transaction.animation = nil
