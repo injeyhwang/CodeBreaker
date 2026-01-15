@@ -35,9 +35,9 @@ struct PegChooserView: View {
 
 #Preview {
     VStack {
-        PegChooserView(choices: [Peg].masterMindPegs)
-        PegChooserView(choices: [Peg].earthTonesPegs)
-        PegChooserView(choices: [Peg].underSeaPegs)
+        PegChooserView(choices: .masterMindPegs)
+        PegChooserView(choices: .earthTonesPegs)
+        PegChooserView(choices: .underSeaPegs)
     }
     .padding()
 }
