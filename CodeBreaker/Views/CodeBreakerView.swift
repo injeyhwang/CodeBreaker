@@ -12,7 +12,7 @@ struct CodeBreakerView: View {
     let game: CodeBreaker
 
     // MARK: Data owned by me
-    @State private var selection: Int = 0
+    @State private var selection = 0
     @State private var resetting = false
     @State private var hideMostRecentMarkers = false
 
@@ -28,6 +28,7 @@ struct CodeBreakerView: View {
                         Button("Guess", action: guessCode)
                             .flexibleSystemFont(min: GuessButton.minFontSize,
                                                 max: GuessButton.maxFontSize)
+                            .lineLimit(1)
                     }
                     .animation(nil, value: game.attempts.count)
                     .opacity(resetting && game.isOver ? 0 : 1)
