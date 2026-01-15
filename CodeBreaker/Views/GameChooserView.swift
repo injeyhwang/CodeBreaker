@@ -9,32 +9,23 @@ import SwiftUI
 
 struct GameChooserView: View {
     // MARK: Data owned by me
-    @State private var games = [CodeBreaker].allGames
+    @State private var selection: CodeBreaker? = nil
 
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(games) { game in
-                    NavigationLink(value: game) {
-                        GameChoiceView(game: game)
-                    }
-                }
-                .onDelete { offsets in
-                    games.remove(atOffsets: offsets)
-                }
-                .onMove { from, to in
-                    games.move(fromOffsets: from, toOffset: to)
-                }
-            }
-            .navigationDestination(for: CodeBreaker.self) { value in
-                CodeBreakerView(game: value)
-            }
-            .navigationTitle("Code Breaker")
-            .toolbar {
-                EditButton()
+        NavigationSplitView(columnVisibility: .constant(.all)) {
+            GameListView(selection: $selection)
+                .navigationTitle("Code Breaker")
+        } detail: {
+            if let selection {
+                CodeBreakerView(game: selection)
+                    .navigationTitle(selection.name)
+                    .navigationBarTitleDisplayMode(.inline)
+            } else {
+                Text("Choose a game!")
             }
         }
+        .navigationSplitViewStyle(.balanced)
     }
 }
 
