@@ -18,10 +18,12 @@ struct PegView: View {
             .strokeBorder(peg)
             .contentShape(PegShape.shape)
             .aspectRatio(1, contentMode: .fit)
+            .frame(maxHeight: PegShape.maxHeight)
     }
 
     private enum PegShape {
         static let shape = Circle()
+        static let maxHeight: CGFloat = 100
     }
 }
 
