@@ -51,12 +51,15 @@ struct CodeBreakerView: View {
                 .transition(.pegChooser)
             }
         }
+        .trackElapsedTime(for: game)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
             }
             ToolbarItem(placement: .automatic) {
-                TimerView(startTime: game.startTime, endTime: game.endTime)
+                TimerView(startTime: game.startTime,
+                          endTime: game.endTime,
+                          elapsedTime: game.elapsedTime)
                     .monospaced()
                     .lineLimit(1)
                     .padding()
@@ -101,6 +104,35 @@ extension CodeBreakerView {
         static let minFontSize: CGFloat = 8
         static let maxFontSize: CGFloat = 80
         static let scaleFactor: CGFloat = 0.1
+    }
+}
+
+extension View {
+    func trackElapsedTime(for game: CodeBreaker) -> some View {
+        modifier(ElapsedTimeTracker(game: game))
+    }
+}
+
+private struct ElapsedTimeTracker: ViewModifier {
+    // MARK: Data in
+    @Environment(\.scenePhase) var scenePhase
+    let game: CodeBreaker
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear { game.startTimer() }
+            .onDisappear { game.pauseTimer() }
+            .onChange(of: game) { oldGame, newGame in
+                oldGame.pauseTimer()
+                newGame.startTimer()
+            }
+            .onChange(of: scenePhase) {
+                switch scenePhase {
+                case .active: game.startTimer()
+                case .background: game.pauseTimer()
+                default: break
+                }
+            }
     }
 }
 
