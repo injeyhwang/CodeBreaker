@@ -16,11 +16,11 @@ import SwiftUI
     var startTime: Date = .now
     var endTime: Date?
 
-    init(name: String, pegChoices: [Peg], pegLength: Int) {
+    init(name: String, pegChoices: [Peg]) {
         self.name = name
         self.pegChoices = pegChoices
-        masterCode = Code(kind: .master(isHidden: true), length: pegLength)
-        guess = Code(kind: .guess, length: pegLength)
+        masterCode = Code(kind: .master(isHidden: true), length: pegChoices.count)
+        guess = Code(kind: .guess, length: pegChoices.count)
         attempts = [Code]()
 
         // Randomize master code from available peg choices

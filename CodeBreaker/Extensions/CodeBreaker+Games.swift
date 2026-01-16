@@ -10,20 +10,17 @@ import SwiftUI
 extension CodeBreaker {
     static let mastermindGame = CodeBreaker(
         name: "Mastermind",
-        pegChoices: .masterMindPegs,
-        pegLength: 4
+        pegChoices: .masterMindPegs
     )
 
     static let earthTonesGame = CodeBreaker(
         name: "Earth Tones",
-        pegChoices: .earthTonesPegs,
-        pegLength: 4
+        pegChoices: .earthTonesPegs
     )
 
     static let underSeaGame = CodeBreaker(
         name: "Undersea",
-        pegChoices: .underSeaPegs,
-        pegLength: 3
+        pegChoices: .underSeaPegs
     )
 }
 
