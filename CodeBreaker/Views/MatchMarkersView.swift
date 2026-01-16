@@ -47,7 +47,7 @@ struct MatchMarkersView: View {
     }
 }
 
-private extension MatchMarkersView {
+extension MatchMarkersView {
     private enum MatchMarker {
         static let size: CGFloat = 20
     }
