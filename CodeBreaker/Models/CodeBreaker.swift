@@ -12,41 +12,50 @@ import SwiftUI
     var pegChoices: [Peg]
     var masterCode: Code
     var guess: Code
-    var attempts: [Code]
-    var startTime: Date = .now
+    var attempts = [Code]()
+    var startTime: Date?
     var endTime: Date?
+    var elapsedTime: TimeInterval = 0
 
     init(name: String, pegChoices: [Peg]) {
         self.name = name
         self.pegChoices = pegChoices
         masterCode = Code(kind: .master(isHidden: true), length: pegChoices.count)
         guess = Code(kind: .guess, length: pegChoices.count)
-        attempts = [Code]()
 
         // Randomize master code from available peg choices
         masterCode.randomize(from: pegChoices)
-
-        // Reset timer
-        startTime = .now
-        endTime = nil
     }
 
     var isOver: Bool {
         attempts.first?.pegs == masterCode.pegs
     }
 
+    func startTimer() {
+        if startTime == nil && !isOver {
+            startTime = .now
+        }
+    }
+
+    func pauseTimer() {
+        if let startTime {
+            elapsedTime += Date.now.timeIntervalSince(startTime)
+        }
+
+        startTime = nil
+    }
+
     func resetGame() {
         let pegLength = Int.random(in: 3...6)
         masterCode = Code(kind: .master(isHidden: true), length: pegLength)
-        guess = Code(kind: .guess, length: pegLength)
-        attempts = [Code]()
-
-        // Randomize master code from available peg choices
         masterCode.randomize(from: pegChoices)
+        guess.reset()
+        attempts.removeAll()
 
         // Reset timer
         startTime = .now
         endTime = nil
+        elapsedTime = 0
     }
 
     func attemptGuess() -> Bool {
@@ -68,8 +77,9 @@ import SwiftUI
 
         // Reveal master code when the game is over
         if isOver {
-            masterCode.kind = .master(isHidden: false)
             endTime = .now
+            masterCode.kind = .master(isHidden: false)
+            pauseTimer()
         }
 
         return true

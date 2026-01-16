@@ -9,23 +9,31 @@ import SwiftUI
 
 struct TimerView: View {
     // MARK: Data in
-    let startTime: Date
+    let startTime: Date?
     let endTime: Date?
+    let elapsedTime: TimeInterval
 
     // MARK: - Body
     var body: some View {
-        if let endTime {
-            Text(endTime, format: timerFormatStyle)
+        if startTime != nil {
+            if let endTime {
+                Text(endTime, format: timerFormat)
+            } else {
+                Text(TimeDataSource<Date>.currentDate, format: timerFormat)
+            }
         } else {
-            Text(TimeDataSource<Date>.currentDate, format: timerFormatStyle)
+            Image(systemName: "pause")
         }
     }
 
-    private var timerFormatStyle: SystemFormatStyle.DateOffset {
-        .offset(to: startTime, allowedFields: [.minute, .second])
+    private var timeDiff: Date { startTime! - elapsedTime }
+
+    private var timerFormat: SystemFormatStyle.DateOffset {
+        .offset(to: timeDiff, allowedFields: [.minute, .second])
     }
 }
 
 #Preview {
-    TimerView(startTime: .now, endTime: nil)
+    TimerView(startTime: .now, endTime: nil, elapsedTime: 0)
+    TimerView(startTime: nil, endTime: nil, elapsedTime: 0)
 }
