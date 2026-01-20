@@ -1,64 +1,52 @@
-## User settings
+# Xcode user data
 xcuserdata/
+**/xcuserdata/
 *.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.pbxuser
 *.mode1v3
 *.mode2v3
 *.perspectivev3
-*.pbxuser
+*.hmap
+**/xcshareddata/IDEWorkspaceChecks.plist
+**/xcshareddata/WorkspaceSettings.xcsettings
 
-## Build folders
-build/
+# Build artifacts
 DerivedData/
+build/
 *.build/
-
-## App packaging
+*.xcresult
 *.ipa
-*.dSYM.zip
 *.dSYM
+*.dSYM.zip
 *.app
 
-## Playgrounds
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Playgrounds
 timeline.xctimeline
 playground.xcworkspace
 
-## Swift Package Manager
-.swiftpm/
-.build/
-Package.resolved
-
-## CocoaPods
-Pods/
-Podfile.lock
-
-## Carthage
-Carthage/Build/
-Carthage/Checkouts/
-
-## Fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
-
-## macOS
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
 
-## Xcode
-*.hmap
-*.ipa
-*.xcscmblueprint
-*.xccheckout
-xcuserdata/
-IDEWorkspaceChecks.plist
-
-## Editor settings
+# Editor/IDE settings
+.vscode/
+.idea/
 *.swp
 *.swo
-*.orig
-*.log
-*.tmp
 *~
-
