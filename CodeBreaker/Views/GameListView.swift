@@ -44,6 +44,7 @@ struct GameListView: View {
             }
         }
         .toolbar {
+            EditButton()
             addButton()
         }
     }
