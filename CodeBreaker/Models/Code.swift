@@ -34,8 +34,8 @@ struct Code: Equatable {
         }
     }
 
-    mutating func reset() {
-        pegs = [Peg](repeating: Peg.missing, count: pegs.count)
+    mutating func reset(with length: Int) {
+        pegs = [Peg](repeating: Peg.missing, count: length)
     }
 
     func match(against otherCode: Code) -> [Match] {

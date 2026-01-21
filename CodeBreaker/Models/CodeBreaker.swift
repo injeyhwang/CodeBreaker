@@ -49,7 +49,7 @@ import SwiftUI
         let pegLength = Int.random(in: 3...6)
         masterCode = Code(kind: .master(isHidden: true), length: pegLength)
         masterCode.randomize(from: pegChoices)
-        guess.reset()
+        guess.reset(with: masterCodeLength)
         attempts.removeAll()
 
         // Reset timer
@@ -64,7 +64,7 @@ import SwiftUI
 
         // Ignore same attempts already made
         guard !attempts.contains(where: { $0.pegs == guess.pegs }) else {
-            guess.reset()
+            guess.reset(with: guess.pegs.count)
             return false
         }
 
@@ -73,7 +73,7 @@ import SwiftUI
         attempts.insert(attempt, at: 0)
 
         // Clear guess
-        guess.reset()
+        guess.reset(with: guess.pegs.count)
 
         // Reveal master code when the game is over
         if isOver {
