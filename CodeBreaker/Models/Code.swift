@@ -14,19 +14,6 @@ struct Code: Equatable {
         pegs = [Peg](repeating: Peg.missing, count: length)
     }
 
-    enum Match: Equatable {
-        case nomatch
-        case exact
-        case inexact
-    }
-
-    enum Kind: Equatable {
-        case master(isHidden: Bool)
-        case guess
-        case attempt([Match])
-        case unknown
-    }
-
     var isHidden: Bool {
         switch kind {
         case .master(let isHidden): return isHidden
