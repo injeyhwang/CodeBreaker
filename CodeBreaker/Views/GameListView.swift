@@ -48,7 +48,7 @@ struct GameListView: View {
         }
     }
 
-    var showGameEditor: Binding<Bool> {
+    private var showGameEditor: Binding<Bool> {
         Binding<Bool>(get: { gameToEdit != nil }, set: { newValue in
             if !newValue { gameToEdit = nil }
         })
