@@ -14,21 +14,22 @@ struct PegView: View {
     // MARK: - Body
     var body: some View {
         PegShape.shape
-            .fill(peg)
+            .stroke(peg.isWhite ? .black : .clear)
+            .fill(peg.toColor)
             .contentShape(PegShape.shape)
             .aspectRatio(1, contentMode: .fit)
-            .frame(maxHeight: PegShape.maxHeight)
     }
+}
 
+extension PegView {
     private enum PegShape {
         static let shape = Circle()
-        static let maxHeight: CGFloat = 100
     }
 }
 
 #Preview {
     VStack {
-        ForEach([Peg].masterMindPegs, id: \.self) { peg in
+        ForEach([Peg].allPegs, id: \.self) { peg in
             PegView(peg: peg)
         }
     }

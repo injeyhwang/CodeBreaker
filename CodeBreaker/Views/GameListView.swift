@@ -60,7 +60,7 @@ struct GameListView: View {
             withAnimation {
                 gameToEdit = CodeBreaker(
                     name: "Untitled",
-                    pegChoices: [.red, .blue]
+                    pegChoices: ["red", "blue"]
                 )
             }
         }
