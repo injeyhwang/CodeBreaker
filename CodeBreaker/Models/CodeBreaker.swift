@@ -21,8 +21,13 @@ class CodeBreaker {
     init(name: String, pegChoices: [Peg]) {
         self.name = name
         self.pegChoices = pegChoices
-        masterCode = Code(kind: .master(isHidden: true), length: pegChoices.count)
-        guess = Code(kind: .guess, length: pegChoices.count)
+
+        let masterCodeLength = Int.random(in: 3...6)
+        masterCode = Code(
+            kind: .master(isHidden: true),
+            length: masterCodeLength
+        )
+        guess = Code(kind: .guess, length: masterCodeLength)
 
         // Randomize master code from available peg choices
         masterCode.randomize(from: pegChoices)
@@ -47,8 +52,11 @@ class CodeBreaker {
     }
 
     func resetGame() {
-        let pegLength = Int.random(in: 3...6)
-        masterCode = Code(kind: .master(isHidden: true), length: pegLength)
+        let masterCodeLength = Int.random(in: 3...6)
+        masterCode = Code(
+            kind: .master(isHidden: true),
+            length: masterCodeLength
+        )
         masterCode.randomize(from: pegChoices)
         guess.reset(with: masterCodeLength)
         attempts.removeAll()
@@ -69,8 +77,9 @@ class CodeBreaker {
             return false
         }
 
-        var attempt = guess
-        attempt.kind = .attempt(guess.match(against: masterCode))
+        let matches = guess.match(against: masterCode)
+        var attempt = Code(kind: .attempt(matches), length: guess.pegs.count)
+        attempt.pegs = guess.pegs
         attempts.insert(attempt, at: 0)
 
         // Clear guess
