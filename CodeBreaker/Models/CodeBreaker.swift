@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-@Observable class CodeBreaker {
+@Observable
+class CodeBreaker {
     var name: String
     var pegChoices: [Peg]
     var masterCode: Code
