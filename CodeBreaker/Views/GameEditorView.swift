@@ -22,13 +22,13 @@ struct GameEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Name") {
-                    TextField("Name", text: $game.name)
+                Section("Game Name") {
+                    TextField("MasterMind", text: $game.name)
                         .autocapitalization(.words)
                         .autocorrectionDisabled()
                         .onSubmit(done)
                 }
-                Section("Pegs") {
+                Section("Peg Choices") {
                     PegChoicesChooserView(pegChoices: $game.pegChoices)
                 }
             }
