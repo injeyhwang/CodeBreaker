@@ -27,9 +27,16 @@ struct PegChooserView: View {
                     onChoose?(peg)
                 } label: {
                     PegView(peg: peg)
+                        .frame(maxHeight: PegButton.maxHeight)
                 }
             }
         }
+    }
+}
+
+extension PegChooserView {
+    private enum PegButton {
+        static let maxHeight: CGFloat = 100
     }
 }
 
