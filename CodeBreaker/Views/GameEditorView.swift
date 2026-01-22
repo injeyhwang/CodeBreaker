@@ -17,7 +17,7 @@ struct GameEditorView: View {
 
     // MARK: Data owned by me
     @State private var showInvalidGameAlert = false
-    @State private var editingPegIndex: Int? = nil
+    @State private var pegChoiceIndex: Int? = nil
 
     // MARK: - Body
     var body: some View {
@@ -46,10 +46,10 @@ struct GameEditorView: View {
             }
             .navigationTitle("Edit Game")
             .sheet(isPresented: showPegEditor) {
-                if let index = editingPegIndex {
+                if let pegChoiceIndex {
                     PegChoiceChooserView(
-                        pegToEdit: $game.pegChoices[index],
-                        index: index
+                        pegChoices: $game.pegChoices,
+                        pegChoiceIndex: pegChoiceIndex
                     )
                 }
             }
@@ -58,7 +58,7 @@ struct GameEditorView: View {
 
     private func editChoiceButton(at index: Int) -> some View {
         Button {
-            withAnimation { editingPegIndex = index }
+            withAnimation { pegChoiceIndex = index }
         } label: {
             HStack {
                 PegView(peg: game.pegChoices[index])
@@ -104,8 +104,8 @@ struct GameEditorView: View {
 
     private var showPegEditor: Binding<Bool> {
         Binding<Bool>(
-            get: { editingPegIndex != nil },
-            set: { newValue in if !newValue { editingPegIndex = nil } }
+            get: { pegChoiceIndex != nil },
+            set: { newValue in if !newValue { pegChoiceIndex = nil } }
         )
     }
 }
@@ -118,7 +118,7 @@ extension GameEditorView {
 
 private extension CodeBreaker {
     var isValid: Bool {
-        !name.isEmpty && pegChoices.areUnique && pegChoices.areAtLeastTwo
+        !name.isEmpty && pegChoices.areUnique && pegChoices.areAtLeastTwo && pegChoices.hasNoMissing
     }
 }
 
@@ -129,6 +129,10 @@ private extension [Peg] {
 
     var areUnique: Bool {
         Set(self).count == self.count
+    }
+
+    var hasNoMissing: Bool {
+        !self.contains(.missing)
     }
 }
 

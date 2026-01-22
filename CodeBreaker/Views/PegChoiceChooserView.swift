@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PegChoiceChooserView: View {
-    @Binding var pegToEdit: Peg
+    @Binding var pegChoices: [Peg]
     @Environment(\.dismiss) var dismiss
-    let index: Int
+    let pegChoiceIndex: Int
     let columns = [GridItem(.adaptive(minimum: Selection.size))]
 
     var body: some View {
@@ -18,15 +18,7 @@ struct PegChoiceChooserView: View {
             ScrollView {
                 LazyVGrid(columns: columns) {
                     ForEach([Peg].allPegs, id: \.self) { peg in
-                        PegView(peg: peg)
-                            .frame(maxHeight: PegChoice.pegSize)
-                            .onTapGesture {
-                                withAnimation { pegToEdit = peg }
-                            }
-                            .padding(PegChoice.padding)
-                            .overlay {
-                                if pegToEdit == peg { selector(peg: peg) }
-                            }
+                        pegButton(peg: peg)
                     }
                 }
                 .padding()
@@ -36,14 +28,45 @@ struct PegChoiceChooserView: View {
                     Button("Done", role: .confirm) { dismiss() }
                 }
             }
-            .navigationTitle("Peg Choice \(index + 1)")
+            .navigationTitle("Peg Choice \(pegChoiceIndex + 1)")
         }
     }
 
-    private func selector(peg: Peg) -> some View {
+    private func isNotAvailable(peg: Peg) -> Bool {
+        chosenPegs.contains(peg)
+    }
+
+    private var chosenPegs: Set<Peg> {
+        Set(pegChoices.enumerated().compactMap { index, peg in
+            index == pegChoiceIndex ? nil : peg
+        })
+    }
+
+    private func pegButton(peg: Peg) -> some View {
+        let isUnavailable = isNotAvailable(peg: peg)
+        return Button {
+            withAnimation {
+                pegChoices[pegChoiceIndex] = peg
+            }
+        } label: {
+            ZStack {
+                PegView(peg: peg)
+                    .frame(maxHeight: PegChoice.pegSize)
+                    .padding(PegChoice.padding)
+
+                if pegChoices[pegChoiceIndex] == peg {
+                    selectionRing(peg: peg)
+                }
+            }
+        }
+        .disabled(isUnavailable)
+        .opacity(isUnavailable ? Selection.unavailable : 1)
+    }
+
+    private func selectionRing(peg: Peg) -> some View {
         Selection.shape
             .stroke(
-                pegToEdit.isWhite ? .black : peg.toColor,
+                pegChoices[pegChoiceIndex].isWhite ? .black : peg.toColor,
                 lineWidth: Selection.lineWidth
             )
             .frame(maxHeight: Selection.size)
@@ -61,11 +84,11 @@ extension PegChoiceChooserView {
         static let shape = Circle()
         static let lineWidth: CGFloat = 5
         static let size: CGFloat = 60
+        static let unavailable: Double = 0.5
     }
 }
 
 #Preview {
-    @Previewable @State var peg: Peg = "green"
-    PegChoiceChooserView(pegToEdit: $peg, index: 0)
+    @Previewable @State var choices: [Peg] = ["green"]
+    PegChoiceChooserView(pegChoices: $choices, pegChoiceIndex: 0)
 }
-
