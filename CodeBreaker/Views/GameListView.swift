@@ -8,14 +8,10 @@
 import SwiftUI
 
 struct GameListView: View {
-    // MARK: Data shared by me
     @Binding var selection: CodeBreaker?
-
-    // MARK: Data owned by me
     @State private var games = [CodeBreaker].allGames
     @State private var gameToEdit: CodeBreaker?
 
-    // MARK: - Body
     var body: some View {
         List(selection: $selection) {
             ForEach(games) { game in

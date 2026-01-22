@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct TimerView: View {
-    // MARK: Data in
     let startTime: Date?
     let endTime: Date?
     let elapsedTime: TimeInterval
 
-    // MARK: - Body
     var body: some View {
         if startTime != nil {
             if let endTime {

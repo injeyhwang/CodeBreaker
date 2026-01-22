@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct GameChooserView: View {
-    // MARK: Data owned by me
     @State private var selection: CodeBreaker? = nil
 
-    // MARK: - Body
     var body: some View {
         NavigationSplitView(columnVisibility: .constant(.all)) {
             GameListView(selection: $selection)

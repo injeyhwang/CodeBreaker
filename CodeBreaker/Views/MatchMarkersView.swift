@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct MatchMarkersView: View {
-    // MARK: Data in
     let matches: [Code.Match]
 
-    // MARK: - Body
     var body: some View {
         HStack(alignment: .top) {
             VStack {

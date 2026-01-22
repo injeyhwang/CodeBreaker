@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct CodeBreakerView: View {
-    // MARK: Data shared with me
     let game: CodeBreaker
-
-    // MARK: Data owned by me
     @State private var selection = 0
     @State private var resetting = false
     @State private var hideMostRecentMarkers = false
 
-    // MARK: - Body
     var body: some View {
         VStack {
             CodeView(code: game.masterCode)

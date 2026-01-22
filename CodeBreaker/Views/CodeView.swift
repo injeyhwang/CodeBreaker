@@ -8,16 +8,10 @@
 import SwiftUI
 
 struct CodeView<AuxView>: View where AuxView: View {
-    // MARK: Data in
     let code: Code
-
-    // MARK: Data shared by me
     @Binding var selection: Int
-
-    // MARK: Data in
     @ViewBuilder let auxView: () -> AuxView
 
-    // MARK: Data owned by me
     @Namespace private var selectionNamespace
 
     init(code: Code,
@@ -28,7 +22,6 @@ struct CodeView<AuxView>: View where AuxView: View {
         self.auxView = auxView
     }
 
-    // MARK: - Body
     var body: some View {
         HStack {
             // Horizontal Pegs

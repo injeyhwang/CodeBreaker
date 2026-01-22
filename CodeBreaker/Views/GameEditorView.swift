@@ -8,18 +8,12 @@
 import SwiftUI
 
 struct GameEditorView: View {
-    // MARK: Data shared by me
     @Bindable var game: CodeBreaker
-
-    // MARK: Data in
-    @Environment(\.dismiss) var dismiss
     let onSubmit: () -> Void
-
-    // MARK: Data owned by me
+    @Environment(\.dismiss) var dismiss
     @State private var showInvalidGameAlert = false
     @State private var pegChoiceIndex: Int? = nil
 
-    // MARK: - Body
     var body: some View {
         NavigationStack {
             Form {

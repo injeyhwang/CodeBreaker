@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct GameChoiceView: View {
-    // MARK: Data in
     let game: CodeBreaker
 
-    // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
             Text(game.name)

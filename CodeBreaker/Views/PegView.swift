@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct PegView: View {
-    // MARK: Data in
     let peg: Peg
 
-    // MARK: - Body
     var body: some View {
         PegShape.shape
             .stroke(peg.isWhite ? .black : .clear)
