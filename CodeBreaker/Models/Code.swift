@@ -5,13 +5,21 @@
 //  Created by In Jey Hwang on 12/30/25.
 //
 
-struct Code: Equatable {
-    var kind: Kind
+import SwiftData
+
+@Model
+class Code {
+    var _kind: String = Kind.unknown.toString
     var pegs: [Peg]
 
+    var kind: Kind {
+        get { return Kind(_kind) }
+        set { _kind = newValue.toString }
+    }
+
     init(kind: Kind = .unknown, length: Int = 4) {
-        self.kind = kind
         pegs = [Peg](repeating: Peg.missing, count: length)
+        self.kind = kind
     }
 
     var isHidden: Bool {
@@ -28,13 +36,13 @@ struct Code: Equatable {
         }
     }
 
-    mutating func randomize(from pegChoices: [Peg]) {
+    func randomize(from pegChoices: [Peg]) {
         pegs = pegs.indices.map { _ in
             pegChoices.randomElement() ?? Peg.missing
         }
     }
 
-    mutating func reset(with length: Int) {
+    func reset(with length: Int) {
         pegs = [Peg](repeating: Peg.missing, count: length)
     }
 

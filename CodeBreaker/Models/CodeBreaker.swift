@@ -5,16 +5,17 @@
 //  Created by In Jey Hwang on 12/27/25.
 //
 
+import SwiftData
 import SwiftUI
 
-@Observable
+@Model
 class CodeBreaker {
     var name: String
     var pegChoices: [Peg]
-    var masterCode: Code
-    var guess: Code
-    var attempts = [Code]()
-    var startTime: Date?
+    @Relationship(deleteRule: .cascade) var masterCode: Code
+    @Relationship(deleteRule: .cascade) var guess: Code
+    @Relationship(deleteRule: .cascade) var attempts = [Code]()
+    @Transient var startTime: Date?
     var endTime: Date?
     var elapsedTime: TimeInterval = 0
 
@@ -78,7 +79,7 @@ class CodeBreaker {
         }
 
         let matches = guess.match(against: masterCode)
-        var attempt = Code(kind: .attempt(matches), length: guess.pegs.count)
+        let attempt = Code(kind: .attempt(matches), length: guess.pegs.count)
         attempt.pegs = guess.pegs
         attempts.insert(attempt, at: 0)
 
