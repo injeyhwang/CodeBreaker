@@ -22,11 +22,15 @@ struct GameChoiceView: View {
 }
 
 #Preview {
+    @Previewable @State var game = CodeBreaker(
+        name: "Mastermind",
+        pegChoices: .masterMindPegs
+    )
     List {
-        GameChoiceView(game: CodeBreaker.mastermindGame)
+        GameChoiceView(game: game)
     }
     List {
-        GameChoiceView(game: CodeBreaker.mastermindGame)
+        GameChoiceView(game: game)
     }
     .listStyle(.plain)
 }

@@ -127,9 +127,24 @@ struct GameListView: View {
     private func addSampleGames() {
         let descriptor = FetchDescriptor<CodeBreaker>()
         if let count = try? modelContext.fetchCount(descriptor), count == 0 {
-            modelContext.insert(CodeBreaker.mastermindGame)
-            modelContext.insert(CodeBreaker.earthTonesGame)
-            modelContext.insert(CodeBreaker.underSeaGame)
+            let mastermindGame = CodeBreaker(
+                name: "Mastermind",
+                pegChoices: .masterMindPegs
+            )
+
+            let earthTonesGame = CodeBreaker(
+                name: "Earth Tones",
+                pegChoices: .earthTonesPegs
+            )
+
+            let underSeaGame = CodeBreaker(
+                name: "Undersea",
+                pegChoices: .underSeaPegs
+            )
+
+            modelContext.insert(mastermindGame)
+            modelContext.insert(earthTonesGame)
+            modelContext.insert(underSeaGame)
         }
     }
 }

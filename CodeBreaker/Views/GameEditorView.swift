@@ -132,9 +132,10 @@ private extension [Peg] {
 
 #Preview {
     @Previewable var game = CodeBreaker(
-        name: "Preview",
-        pegChoices: ["red", "blue", "green"]
+        name: "Mastermind",
+        pegChoices: .masterMindPegs
     )
+
     GameEditorView(game: game) { print("onSubmit called") }
         .onChange(of: game.name) {
             print("Game name changed to \(game.name)")

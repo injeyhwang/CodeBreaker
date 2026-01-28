@@ -74,10 +74,14 @@ private enum Selection {
 }
 
 #Preview {
+    @Previewable @State var game = CodeBreaker(
+        name: "Mastermind",
+        pegChoices: .masterMindPegs
+    )
     @Previewable @State var selection = 0
     VStack {
-        CodeView(code: CodeBreaker.mastermindGame.masterCode)
-        CodeView(code: CodeBreaker.mastermindGame.guess, selection: $selection)
+        CodeView(code: game.masterCode)
+        CodeView(code: game.guess, selection: $selection)
     }
     .padding()
 }

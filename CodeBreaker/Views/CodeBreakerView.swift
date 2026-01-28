@@ -132,7 +132,10 @@ private struct ElapsedTimeTracker: ViewModifier {
 }
 
 #Preview {
-    @Previewable @State var game = CodeBreaker.mastermindGame
+    @Previewable @State var game = CodeBreaker(
+        name: "Mastermind",
+        pegChoices: .masterMindPegs
+    )
     NavigationStack {
         CodeBreakerView(game: game)
     }
