@@ -103,34 +103,6 @@ extension CodeBreakerView {
     }
 }
 
-extension View {
-    func trackElapsedTime(for game: CodeBreaker) -> some View {
-        modifier(ElapsedTimeTracker(game: game))
-    }
-}
-
-private struct ElapsedTimeTracker: ViewModifier {
-    @Environment(\.scenePhase) var scenePhase
-    let game: CodeBreaker
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear { game.startTimer() }
-            .onDisappear { game.pauseTimer() }
-            .onChange(of: game) { oldGame, newGame in
-                oldGame.pauseTimer()
-                newGame.startTimer()
-            }
-            .onChange(of: scenePhase) {
-                switch scenePhase {
-                case .active: game.startTimer()
-                case .background: game.pauseTimer()
-                default: break
-                }
-            }
-    }
-}
-
 #Preview {
     @Previewable @State var game = CodeBreaker(
         name: "Mastermind",
