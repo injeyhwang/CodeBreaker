@@ -55,6 +55,7 @@ struct GameEditorView: View {
             withAnimation { pegChoiceIndex = index }
         } label: {
             HStack {
+                removeChoiceButton(at: index)
                 PegView(peg: game.pegChoices[index])
                     .frame(maxHeight: PegChoice.maxHeight)
                 Text("Peg Choice \(index + 1)")
@@ -70,6 +71,14 @@ struct GameEditorView: View {
                 Image(systemName: "plus.circle")
                 Text("Add Peg Choice")
             }
+        }
+    }
+
+    private func removeChoiceButton(at index: Int) -> some View {
+        Button(role: .destructive) {
+            game.pegChoices.remove(at: index)
+        } label: {
+            Image(systemName: "minus.circle")
         }
     }
 
