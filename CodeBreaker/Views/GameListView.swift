@@ -5,12 +5,40 @@
 //  Created by In Jey Hwang on 1/14/26.
 //
 
+import SwiftData
 import SwiftUI
 
 struct GameListView: View {
     @Binding var selection: CodeBreaker?
-    @State private var games = [CodeBreaker].allGames
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: \CodeBreaker.name, order: .forward) private var games: [CodeBreaker]
     @State private var gameToEdit: CodeBreaker?
+
+    init(
+        sortBy: SortOption = .name,
+        nameContains search: String = "",
+        selection: Binding<CodeBreaker?>
+    ) {
+        _selection = selection
+
+        let lowercasedSearch = search.lowercased()
+        let capitalizedSearch = search.capitalized
+
+        let predicate = #Predicate<CodeBreaker> { game in
+            search.isEmpty
+            || game.name.contains(search)
+            || game.name.contains(lowercasedSearch)
+            || game.name.contains(capitalizedSearch)
+        }
+        _games = switch sortBy {
+        case .name: Query(filter: predicate, sort: \CodeBreaker.name)
+        case .recent: Query(
+            filter: predicate,
+            sort: \CodeBreaker.lastAttemptDate,
+            order: .reverse
+        )
+        }
+    }
 
     var body: some View {
         List(selection: $selection) {
@@ -28,12 +56,12 @@ struct GameListView: View {
                 }
             }
             .onDelete { offsets in
-                games.remove(atOffsets: offsets)
-            }
-            .onMove { from, to in
-                games.move(fromOffsets: from, toOffset: to)
+                for offset in offsets {
+                    modelContext.delete(games[offset])
+                }
             }
         }
+        .listStyle(.plain)
         .onChange(of: games) {
             if let selection, !games.contains(selection) {
                 self.selection = nil
@@ -43,6 +71,7 @@ struct GameListView: View {
             EditButton()
             addButton()
         }
+        .onAppear { addSampleGames() }
     }
 
     private var showGameEditor: Binding<Bool> {
@@ -68,11 +97,11 @@ struct GameListView: View {
                 )
                 GameEditorView(game: gameToEdit) {
                     // check if gameToEdit exists in the games array
-                    guard let index = games.firstIndex(of: gameToEdit) else {
-                        games.insert(gameToEdit, at: 0)
-                        return
+                    if games.contains(gameToEdit) {
+                        modelContext.delete(gameToEdit)
                     }
-                    games[index] = copyOfGameToEdit
+
+                    modelContext.insert(copyOfGameToEdit)
                 }
             }
         }
@@ -80,7 +109,9 @@ struct GameListView: View {
 
     private func deleteButton(for game: CodeBreaker) -> some View {
         Button("Delete", systemImage: "minus.circle", role: .destructive) {
-            withAnimation { games.removeAll { $0 == game } }
+            withAnimation {
+                modelContext.delete(game)
+            }
         }
     }
 
@@ -91,9 +122,18 @@ struct GameListView: View {
             }
         }
     }
+
+    private func addSampleGames() {
+        let descriptor = FetchDescriptor<CodeBreaker>()
+        if let count = try? modelContext.fetchCount(descriptor), count == 0 {
+            modelContext.insert(CodeBreaker.mastermindGame)
+            modelContext.insert(CodeBreaker.earthTonesGame)
+            modelContext.insert(CodeBreaker.underSeaGame)
+        }
+    }
 }
 
-#Preview {
+#Preview(traits: .swiftData) {
     @Previewable @State var selection: CodeBreaker?
     NavigationStack {
         GameListView(selection: $selection)

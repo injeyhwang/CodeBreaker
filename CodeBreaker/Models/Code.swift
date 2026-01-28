@@ -5,12 +5,14 @@
 //  Created by In Jey Hwang on 12/30/25.
 //
 
+import Foundation
 import SwiftData
 
 @Model
 class Code {
     var _kind: String = Kind.unknown.toString
     var pegs: [Peg]
+    var timestamp = Date.now
 
     var kind: Kind {
         get { return Kind(_kind) }

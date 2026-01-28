@@ -23,11 +23,3 @@ extension CodeBreaker {
         pegChoices: .underSeaPegs
     )
 }
-
-extension [CodeBreaker] {
-    static let allGames: [CodeBreaker] = [
-        .mastermindGame,
-        .earthTonesGame,
-        .underSeaGame
-    ]
-}

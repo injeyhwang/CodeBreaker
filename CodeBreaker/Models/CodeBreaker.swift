@@ -6,7 +6,7 @@
 //
 
 import SwiftData
-import SwiftUI
+import Foundation
 
 @Model
 class CodeBreaker {
@@ -14,10 +14,16 @@ class CodeBreaker {
     var pegChoices: [Peg]
     @Relationship(deleteRule: .cascade) var masterCode: Code
     @Relationship(deleteRule: .cascade) var guess: Code
-    @Relationship(deleteRule: .cascade) var attempts = [Code]()
+    @Relationship(deleteRule: .cascade) var _attempts = [Code]()
     @Transient var startTime: Date?
     var endTime: Date?
     var elapsedTime: TimeInterval = 0
+    var lastAttemptDate: Date? = Date.now
+
+    var attempts: [Code] {
+        get { _attempts.sorted { $0.timestamp > $1.timestamp }}
+        set { _attempts = newValue }
+    }
 
     init(name: String, pegChoices: [Peg]) {
         self.name = name
@@ -82,6 +88,7 @@ class CodeBreaker {
         let attempt = Code(kind: .attempt(matches), length: guess.pegs.count)
         attempt.pegs = guess.pegs
         attempts.insert(attempt, at: 0)
+        lastAttemptDate = .now
 
         // Clear guess
         guess.reset(with: guess.pegs.count)
