@@ -110,7 +110,6 @@ extension View {
 }
 
 private struct ElapsedTimeTracker: ViewModifier {
-    // MARK: Data in
     @Environment(\.scenePhase) var scenePhase
     let game: CodeBreaker
 
