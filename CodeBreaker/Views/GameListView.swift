@@ -10,7 +10,7 @@ import SwiftUI
 
 struct GameListView: View {
     @Binding var selection: CodeBreaker?
-    @Environment(\.modelContext) var modelContext
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \CodeBreaker.name, order: .forward) private var games: [CodeBreaker]
     @State private var gameToEdit: CodeBreaker?
 

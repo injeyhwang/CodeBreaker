@@ -15,11 +15,11 @@ extension View {
 }
 
 private struct ElapsedTimeTracker: ViewModifier {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     let game: CodeBreaker
 
-    var modelContextWillSavePublisher: NotificationCenter.Publisher {
+    private var modelContextWillSavePublisher: NotificationCenter.Publisher {
         NotificationCenter.default.publisher(
             for: ModelContext.willSave,
             object: modelContext
