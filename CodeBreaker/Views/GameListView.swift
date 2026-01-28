@@ -96,7 +96,7 @@ struct GameListView: View {
                     name: gameToEdit.name,
                     pegChoices: gameToEdit.pegChoices
                 )
-                GameEditorView(game: gameToEdit) {
+                GameEditorView(game: copyOfGameToEdit) {
                     // check if gameToEdit exists in the games array
                     if games.contains(gameToEdit) {
                         modelContext.delete(gameToEdit)
