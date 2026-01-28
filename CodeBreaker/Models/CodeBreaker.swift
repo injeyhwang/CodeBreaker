@@ -19,6 +19,7 @@ class CodeBreaker {
     var endTime: Date?
     var elapsedTime: TimeInterval = 0
     var lastAttemptDate: Date? = Date.now
+    var isOver: Bool = false
 
     var attempts: [Code] {
         get { _attempts.sorted { $0.timestamp > $1.timestamp }}
@@ -40,13 +41,15 @@ class CodeBreaker {
         masterCode.randomize(from: pegChoices)
     }
 
-    var isOver: Bool {
-        attempts.first?.pegs == masterCode.pegs
+    func updateElapsedTime() {
+        pauseTimer()
+        startTimer()
     }
 
     func startTimer() {
         if startTime == nil && !isOver {
             startTime = .now
+            elapsedTime += 0.00001
         }
     }
 
@@ -72,6 +75,7 @@ class CodeBreaker {
         startTime = .now
         endTime = nil
         elapsedTime = 0
+        isOver = false
     }
 
     func attemptGuess() -> Bool {
@@ -94,7 +98,8 @@ class CodeBreaker {
         guess.reset(with: guess.pegs.count)
 
         // Reveal master code when the game is over
-        if isOver {
+        if attempts.first?.pegs == masterCode.pegs {
+            isOver = true
             endTime = .now
             masterCode.kind = .master(isHidden: false)
             pauseTimer()
