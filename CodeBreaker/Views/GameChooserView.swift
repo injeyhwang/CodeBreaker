@@ -28,6 +28,7 @@ struct GameChooserView: View {
             )
             .navigationTitle("Code Breaker")
             .searchable(text: $search)
+            .animation(.default, value: search)
         } detail: {
             if let selection {
                 CodeBreakerView(game: selection)
