@@ -23,16 +23,17 @@ struct GameListView: View {
 
         let lowercasedSearch = search.lowercased()
         let capitalizedSearch = search.capitalized
+        let completedOnly = sortBy == .completed
 
         let predicate = #Predicate<CodeBreaker> { game in
-            search.isEmpty
+            (!completedOnly || game.isOver) && (search.isEmpty
             || game.name.contains(search)
             || game.name.contains(lowercasedSearch)
-            || game.name.contains(capitalizedSearch)
+            || game.name.contains(capitalizedSearch))
         }
         _games = switch sortBy {
         case .name: Query(filter: predicate, sort: \CodeBreaker.name)
-        case .recent: Query(
+        case .recent, .completed: Query(
             filter: predicate,
             sort: \CodeBreaker.lastAttemptDate,
             order: .reverse
