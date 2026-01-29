@@ -42,8 +42,10 @@ struct CodeBreakerView: View {
             }
 
             if !game.isOver {
-                PegChooserView(choices: game.pegChoices,
-                               onChoose: changeSelectedPeg)
+                PegChooserView(
+                    choices: game.pegChoices,
+                    onChoose: changeSelectedPeg
+                )
                 .transition(.pegChooser)
             }
         }
@@ -52,13 +54,15 @@ struct CodeBreakerView: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Reset", systemImage: "arrow.circlepath", action: resetGame)
             }
-            ToolbarItem(placement: .automatic) {
-                TimerView(startTime: game.startTime,
-                          endTime: game.endTime,
-                          elapsedTime: game.elapsedTime)
-                    .monospaced()
-                    .lineLimit(1)
-                    .padding()
+            ToolbarItem {
+                TimerView(
+                    startTime: game.startTime,
+                    endTime: game.endTime,
+                    elapsedTime: game.elapsedTime
+                )
+                .monospaced()
+                .lineLimit(1)
+                .padding()
             }
         }
         .padding()
