@@ -69,27 +69,9 @@ struct GameListView: View {
             }
         }
         .toolbar {
-            EditButton()
             addButton()
         }
         .onAppear { addSampleGames() }
-    }
-
-    private var showGameEditor: Binding<Bool> {
-        Binding<Bool>(get: { gameToEdit != nil }, set: { newValue in
-            if !newValue { gameToEdit = nil }
-        })
-    }
-
-    private func addButton() -> some View {
-        Button("Add Game", systemImage: "plus") {
-            withAnimation {
-                gameToEdit = CodeBreaker(
-                    name: "Untitled",
-                    pegChoices: ["red", "blue"]
-                )
-            }
-        }
         .sheet(isPresented: showGameEditor) {
             if let gameToEdit {
                 let copyOfGameToEdit = CodeBreaker(
@@ -104,6 +86,23 @@ struct GameListView: View {
 
                     modelContext.insert(copyOfGameToEdit)
                 }
+            }
+        }
+    }
+
+    private var showGameEditor: Binding<Bool> {
+        Binding<Bool>(get: { gameToEdit != nil }, set: { newValue in
+            if !newValue { gameToEdit = nil }
+        })
+    }
+
+    private func addButton() -> some View {
+        Button("Add Game", systemImage: "plus") {
+            withAnimation {
+                gameToEdit = CodeBreaker(
+                    name: "",
+                    pegChoices: []
+                )
             }
         }
     }

@@ -19,9 +19,14 @@ struct PegChooserView: View {
     var body: some View {
         HStack {
             ForEach(choices, id: \.self) { peg in
-                Button {
-                    onChoose?(peg)
-                } label: {
+                if let onChoose {
+                    Button {
+                        onChoose(peg)
+                    } label: {
+                        PegView(peg: peg)
+                            .frame(maxHeight: PegButton.maxHeight)
+                    }
+                } else {
                     PegView(peg: peg)
                         .frame(maxHeight: PegButton.maxHeight)
                 }
