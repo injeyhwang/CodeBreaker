@@ -9,14 +9,44 @@ import SwiftUI
 
 struct GameChoiceView: View {
     let game: CodeBreaker
+    let size: Size
+
+    init(game: CodeBreaker, size: Size = .large) {
+        self.game = game
+        self.size = size
+    }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        layout {
             Text(game.name)
-                .font(.title)
+                .font(getGameTitleSize)
             PegChooserView(choices: game.pegChoices)
-                .frame(maxHeight: 50)
-            Text("^[\(game.attempts.count) attempt](inflect: true)")
+                .frame(maxHeight: getPegChoicesSize)
+            if size == .large {
+                Text("^[\(game.attempts.count) attempt](inflect: true)")
+            }
+        }
+    }
+
+    private var layout: AnyLayout {
+        switch size {
+            case .compact: return AnyLayout(HStackLayout())
+        default: return AnyLayout(VStackLayout(alignment: .leading))
+        }
+    }
+
+    private var getGameTitleSize: Font {
+        switch size {
+        case .compact: return .body
+        default: return .title
+        }
+    }
+
+    private var getPegChoicesSize: CGFloat {
+        switch size {
+        case .compact: return 25
+        case .regular: return 35
+        default: return 50
         }
     }
 }
@@ -27,9 +57,8 @@ struct GameChoiceView: View {
         pegChoices: .masterMindPegs
     )
     List {
-        GameChoiceView(game: game)
-    }
-    List {
+        GameChoiceView(game: game, size: .compact)
+        GameChoiceView(game: game, size: .regular)
         GameChoiceView(game: game)
     }
     .listStyle(.plain)
