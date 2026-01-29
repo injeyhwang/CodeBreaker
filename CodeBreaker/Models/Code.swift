@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Code {
+final class Code {
     var _kind: String = Kind.unknown.toString
     var pegs: [Peg]
     var timestamp = Date.now

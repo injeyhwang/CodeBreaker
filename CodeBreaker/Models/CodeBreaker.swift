@@ -9,7 +9,7 @@ import SwiftData
 import Foundation
 
 @Model
-class CodeBreaker {
+final class CodeBreaker {
     var name: String
     var pegChoices: [Peg]
     @Relationship(deleteRule: .cascade) var masterCode: Code
